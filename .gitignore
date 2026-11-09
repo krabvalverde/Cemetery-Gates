@@ -75,3 +75,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
+
+# Arquivos de contexto/planos de IA (nunca versionar)
+CLAUDE.md
+.claude/
