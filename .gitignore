@@ -79,3 +79,6 @@ crashlytics-build.properties
 # Arquivos de contexto/planos de IA (nunca versionar)
 CLAUDE.md
 .claude/
+
+# Backups automáticos do Blender
+*.blend1

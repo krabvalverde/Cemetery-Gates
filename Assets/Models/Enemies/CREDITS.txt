@@ -1,0 +1,10 @@
+Modelos de inimigos - licença CC Attribution 4.0 (creditar nos créditos do jogo)
+
+Zombie.fbx   - "Lowpoly_zombie" por churliaevyaroslav
+               https://sketchfab.com/3d-models/e550de538cf042fdb15bc71e78800863
+Skeleton.fbx - "Skeleton Warrior - Animated Low-Poly Enemy" por Arsyuta777
+               https://sketchfab.com/3d-models/dfeb342871204ecba0ae25f48c487738
+Ghoul.fbx    - "Ghoul" por Northcliffe (textura recolorida para verde)
+               https://sketchfab.com/3d-models/32a93de8d7454b19bca6866746a8e3ee
+
+Fonte editável: Assets/Models/Source~/Enemies.blend
