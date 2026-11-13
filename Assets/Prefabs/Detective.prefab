@@ -66,6 +66,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7309831420051632676}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7235320738426940878}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6232438242832302692}
   m_SourcePrefab: {fileID: 100100000, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
 --- !u!1 &8147283387115180500 stripped
 GameObject:
@@ -114,3 +120,31 @@ MonoBehaviour:
   backSpeed: 1.1
   turnSpeed: 150
   gravity: -20
+--- !u!114 &7235320738426940878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8147283387115180500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e1ff3cd4b0e974fb4ec7b6261593cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  slots:
+  - item: {fileID: 11400000, guid: c489d7173c341bc488651de66c370501, type: 2}
+    count: 1
+--- !u!114 &6232438242832302692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8147283387115180500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a5e4857589b28d41a66318c7fbc9565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DetectiveHealth
+  maxHits: 10

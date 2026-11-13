@@ -48,6 +48,7 @@ Sobreviva ou morra
 | 1.7 | 05/11/2026 | Rafaela | Cenário inicial (cemitério com portão, casa do coveiro e cripta) |
 | 1.8 | 05/11/2026 | Rafaela | Movimentação do detetive (tank controls, valores) e estados de animação |
 | 1.9 | 05/11/2026 | Rafaela | Cenário: chão uniforme e sem caminho de pedras na frente do portão |
+| 2.0 | 12/11/2026 | Rafaela | Sistema de inventário (coletar, usar, analisar, descartar), itens no cenário e tela do inventário |
 
 **Sumário**
 
@@ -208,7 +209,8 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Ação | Teclado / Mouse | Controle (opcional) |
 | :---- | :---- | :---- |
 | Movimentação (tank controls) | W, A, S, D |  |
-| Inventário | I |  |
+| Inventário (abrir/fechar) | I (Esc também fecha) |  |
+| Navegar no inventário | Mouse, ou setas + Enter |  |
 | Mirar (segurar) | Mouse Dir. |  |
 | Ataque/ Tiro | Mouse Esq. |  |
 | Interagir | E |  |
@@ -225,9 +227,10 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Tank controls | W/S andam para frente/trás, A/D giram o personagem no lugar; Shift corre (só para frente) | Andar 1,6 m/s; correr 3,8 m/s; ré 1,1 m/s; giro 150°/s |
 | Atirar com a arma (mira com auto-trava) | Segurar Mouse Dir. deixa o personagem parado e trava a mira no inimigo mais próximo à frente; Mouse Esq. atira com o revólver | A definir |
 | Bater com objetos (corpo a corpo) | Ataque sem mirar contra inimigos próximos, usando objetos | Objetos e valores a definir |
-| Coleta de itens | Itens encontrados no cenário vão para o inventário | A definir |
-| Inventário | 10 espaços, um item por espaço, sem peso; galhos especiais empilham no mesmo espaço; itens podem ser guardados, descartados ou arremessados no cenário | 10 espaços |
-| Interagir com o cenário | Abrir/usar portas, portões e janelas | Tecla E |
+| Coleta de itens | Itens encontrados no cenário vão para o inventário ao apertar E perto deles; com o inventário cheio o item fica no chão | Tecla E, até 1,5 m do item |
+| Inventário | 10 espaços, um item por espaço, sem peso; galhos especiais empilham no mesmo espaço; itens podem ser guardados, descartados ou arremessados no cenário. A tela do inventário pausa o jogo e mostra a condição (vida) e a arma equipada. Ações sobre o item escolhido: **Usar**, **Analisar** (mostra o texto explicativo do item) e **Descartar** (larga o item no chão, e ele pode ser pego de novo; itens sem modelo no mundo não podem ser largados) | 10 espaços |
+| Usar item | Perto de um ponto do cenário que aceita aquele item (ex.: porta trancada), o item é usado nele e a história avança (a chave é consumida e a porta abre). Fora disso: arma equipa/guarda; item de cura restaura vida (não é gasto com a vida cheia) | Alcance de 2,2 m do ponto |
+| Interagir com o cenário | Abrir/usar portas, portões e janelas; num ponto trancado, E mostra uma mensagem de dica | Tecla E |
 | Save manual (extrator) | O jogador encontra galhos especiais, que ficam no inventário. Só é possível salvar em um extrator (espécie de moedor), que fica nas áreas seguras: o galho é inserido, vira óleo e o detetive reabastece o lampião. Cada save consome 1 galho | 1 galho por save; áreas seguras a definir |
 | Ação contextual | Espaço só funciona em pontos marcados do cenário (sair de buraco, atravessar vão); não há pulo livre | A definir |
 | Lampião a óleo | O detetive carrega um lampião que ilumina em âmbar ao seu redor | A definir |
@@ -288,6 +291,8 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | :---- | :---- | :---- | :---- |
 | Item de cura | Restaura vida | *\[Quantidade a definir\]* | *\[A definir\]* |
 | Galho especial | Inserido no extrator (áreas seguras), vira óleo para o lampião e permite salvar o jogo; empilha no inventário | Consumido ao salvar (1 por save) | *\[A definir\]* |
+| Revólver | Arma do detetive; equipada pelo inventário | Permanente | Inventário inicial |
+| Chave da casa do coveiro | Destranca a porta da casa do coveiro | Consumida ao usar | Cemitério, ao lado da cova aberta perto da casa do coveiro |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
@@ -323,6 +328,7 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | :---- | :---- | :---- |
 | **Menu inicial** | Título do jogo, Novo jogo, Continuar, Opções, Créditos, Sair (com música de fundo) | Jogo (novo), Jogo (último save), Opções, Créditos, fecha o jogo |
 | **Opções** | *\[A definir\]* | Menu inicial |
+| **Inventário** (tecla I, pausa o jogo) | 10 espaços, detalhes do item, condição e arma equipada, botões Usar / Analisar / Descartar | Jogo (I ou Esc) |
 | **Pausa (opcional)** | *\[Continuar, Reiniciar, Menu\]* | *\[Jogo, Menu\]* |
 | **Vitória** | *\[Pontuação final, Jogar novamente, Menu\]* | *\[Jogo, Menu\]* |
 | **Game over** | *\[Mensagem, Reiniciar, Menu\]* | *\[Jogo, Menu\]* |
