@@ -19,6 +19,18 @@ public class DetectiveCombat : MonoBehaviour
     [SerializeField] Transform lowerArm;
     [SerializeField] Transform hand;
     [SerializeField] Transform revolverModel;
+    [SerializeField] Transform muzzle;
+    [SerializeField] GameObject muzzleFlash;
+    [SerializeField] Transform bulletPrefab;
+    [SerializeField] float bulletSpeed = 60f;
+    [SerializeField] float flashDuration = 0.05f;
+    [SerializeField] float recoilAngle = 25f;
+    [SerializeField] float recoilRecovery = 150f; // graus por segundo
+    [SerializeField] AudioClip shotSound;
+    [SerializeField] AudioClip dryFireSound;
+    [SerializeField] AudioClip reloadSound;
+    [SerializeField] AudioClip punchSound;
+    [SerializeField] AudioClip punchHitSound;
 
     public int Loaded { get; private set; }
     public int CylinderSize => cylinderSize;
@@ -31,6 +43,7 @@ public class DetectiveCombat : MonoBehaviour
     bool aiming;
     bool punching;
     float nextShot;
+    float recoil;
 
     void Awake()
     {
@@ -59,12 +72,15 @@ public class DetectiveCombat : MonoBehaviour
     {
         if (health.Current == 0) aiming = false;
         revolverModel.gameObject.SetActive(aiming);
+        recoil = Mathf.MoveTowards(recoil, 0f, recoilRecovery * Time.deltaTime);
         if (!aiming) return;
         Vector3 direction = AimDirection(upperArm.position);
-        upperArm.rotation = Quaternion.FromToRotation(upperArm.up, direction) * upperArm.rotation;
-        lowerArm.rotation = Quaternion.FromToRotation(lowerArm.up, direction) * lowerArm.rotation;
-        hand.rotation = Quaternion.FromToRotation(hand.up, direction) * hand.rotation;
-        revolverModel.SetPositionAndRotation(hand.position, Quaternion.LookRotation(direction));
+        // Recuo: o tiro joga o cano para cima, mais na mão que no ombro, e volta aos poucos.
+        Vector3 Kick(float amount) => Quaternion.AngleAxis(-recoil * amount, transform.right) * direction;
+        upperArm.rotation = Quaternion.FromToRotation(upperArm.up, Kick(0.3f)) * upperArm.rotation;
+        lowerArm.rotation = Quaternion.FromToRotation(lowerArm.up, Kick(0.7f)) * lowerArm.rotation;
+        hand.rotation = Quaternion.FromToRotation(hand.up, Kick(1f)) * hand.rotation;
+        revolverModel.SetPositionAndRotation(hand.position, Quaternion.LookRotation(Kick(1f)));
     }
 
     Vector3 AimDirection(Vector3 from) => target ? (target.Center - from).normalized : transform.forward;
@@ -89,6 +105,7 @@ public class DetectiveCombat : MonoBehaviour
         float bestDistance = shotRange;
         foreach (var enemy in FindObjectsByType<Enemy>(FindObjectsInactive.Exclude))
         {
+            if (enemy.Dead) continue;
             Vector3 to = enemy.transform.position - transform.position;
             to.y = 0f;
             float distance = to.magnitude;
@@ -106,17 +123,48 @@ public class DetectiveCombat : MonoBehaviour
         if (Time.time < nextShot) return;
         if (Loaded == 0)
         {
+            Sfx.Play(dryFireSound, transform.position);
             InventoryUI.ShowMessage("Sem balas no tambor. R para recarregar.");
             return;
         }
 
         Loaded--;
         nextShot = Time.time + shotCooldown;
+        recoil = recoilAngle;
+        Sfx.Play(shotSound, muzzle.position, 1f, 0.05f);
+        StartCoroutine(Flash());
+
         Vector3 origin = transform.position + Vector3.up * 1.4f;
         Vector3 direction = AimDirection(origin);
-        if (!Physics.Raycast(origin, direction, out var hit, shotRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return;
-        var enemy = hit.collider.GetComponentInParent<Enemy>();
+        Vector3 end = origin + direction * shotRange;
+        Enemy enemy = null;
+        if (Physics.Raycast(origin, direction, out var hit, shotRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        {
+            end = hit.point;
+            enemy = hit.collider.GetComponentInParent<Enemy>();
+        }
+        StartCoroutine(FlyBullet(end, enemy));
+    }
+
+    IEnumerator Flash()
+    {
+        muzzleFlash.SetActive(true);
+        yield return new WaitForSeconds(flashDuration);
+        muzzleFlash.SetActive(false);
+    }
+
+    // O projétil sai do cano e o dano só acontece quando ele chega.
+    IEnumerator FlyBullet(Vector3 end, Enemy enemy)
+    {
+        var bullet = Instantiate(bulletPrefab, muzzle.position, Quaternion.LookRotation(end - muzzle.position));
+        while (bullet.position != end)
+        {
+            bullet.position = Vector3.MoveTowards(bullet.position, end, bulletSpeed * Time.deltaTime);
+            yield return null;
+        }
         if (enemy) enemy.TakeDamage(shotDamage);
+        bullet.GetComponent<MeshRenderer>().enabled = false;
+        Destroy(bullet.gameObject, 0.1f); // deixa o rastro sumir
     }
 
     void Reload()
@@ -130,6 +178,7 @@ public class DetectiveCombat : MonoBehaviour
         }
         for (int i = 0; i < amount; i++) inventory.RemoveOne(ammo);
         Loaded += amount;
+        Sfx.Play(reloadSound, transform.position, 0.8f, 0.03f);
         InventoryUI.ShowMessage($"Revólver recarregado ({Loaded}/{cylinderSize}).");
     }
 
@@ -137,14 +186,20 @@ public class DetectiveCombat : MonoBehaviour
     {
         punching = true;
         movement.Play("Punch");
-        yield return new WaitForSeconds(punchHitDelay);
+        yield return new WaitForSeconds(punchHitDelay - 0.15f);
+        Sfx.Play(punchSound, transform.position, 0.7f); // o "vush" começa um pouco antes do contato
+        yield return new WaitForSeconds(0.15f);
 
         Vector3 center = transform.position + Vector3.up + transform.forward * 0.8f;
+        bool hitSomething = false;
         foreach (var col in Physics.OverlapSphere(center, punchRadius, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
         {
             var enemy = col.GetComponentInParent<Enemy>();
-            if (enemy) enemy.TakeDamage(punchDamage);
+            if (!enemy) continue;
+            enemy.TakeDamage(punchDamage);
+            hitSomething = true;
         }
+        if (hitSomething) Sfx.Play(punchHitSound, center);
 
         yield return new WaitForSeconds(punchDuration - punchHitDelay);
         punching = false;

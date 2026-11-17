@@ -160,6 +160,8 @@ Sobreviva ou morra
 
 **Perspectiva e câmera: Câmera Fixa**
 
+O cemitério é dividido em 10 zonas, cada uma com a sua câmera fixa, que liga quando o detetive entra na zona. Cada câmera enquadra a zona inteira, inclusive as bordas por onde o detetive entra. Se ainda assim ele chegar perto da borda do quadro, a câmera gira no lugar (sem se mover) só o necessário para mantê-lo visível; ao trocar de zona, a câmera nova já entra com ele no quadro.
+
 **Duração média do jogo: De 1 a 2 horas** 
 
 ## **1.3 Referências e inspirações** {#1.3-referências-e-inspirações}
@@ -228,7 +230,7 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | :---- | :---- | :---- |
 | Vida | O detetive aguenta um número limitado de golpes; ao chegar a zero ele cai (animação Death), para de responder e os inimigos param de atacar; game over | 10 hits |
 | Tank controls | W/S andam para frente/trás, A/D giram o personagem no lugar; Shift corre (só para frente) | Andar 1,6 m/s; correr 3,8 m/s; ré 1,1 m/s; giro 150°/s |
-| Atirar com a arma (mira com auto-trava) | Com o revólver equipado, segurar Mouse Dir. deixa o personagem parado, com o braço estendido e o revólver apontado para frente, mesmo sem inimigos por perto. Sem alvo, A/D giram o detetive (150°/s) para mirar em qualquer direção; se houver inimigo à frente, a mira trava nele. Mouse Esq. atira a qualquer momento enquanto mira. Sem balas no tambor, aparece a mensagem para recarregar | Dano 5 (inimigo comum cai com 2 tiros); tambor de 6 balas; alcance 15 m; trava em inimigos até 60° à frente; 0,6 s entre tiros |
+| Atirar com a arma (mira com auto-trava) | Com o revólver equipado, segurar Mouse Dir. deixa o personagem parado, com o braço estendido e o revólver apontado para frente, mesmo sem inimigos por perto. Sem alvo, A/D giram o detetive (150°/s) para mirar em qualquer direção; se houver inimigo à frente, a mira trava nele. Mouse Esq. atira a qualquer momento enquanto mira: o braço dá um coice, sai um clarão do cano e a bala voa visível com rastro, causando o dano ao chegar. Sem balas no tambor, aparece a mensagem para recarregar | Dano 5 (inimigo comum cai com 2 tiros); tambor de 6 balas; alcance 15 m; trava em inimigos até 60° à frente; 0,6 s entre tiros |
 | Soco (corpo a corpo) | Sem mirar (ou sem o revólver equipado), Mouse Esq. dá um soco; o detetive fica parado durante o golpe. Não há defesa nem esquiva | Dano 2 (inimigo comum cai com 5 socos); alcance de \~1 m à frente; 0,9 s por soco |
 | Recarregar | Com o revólver equipado, R completa o tambor usando balas do item Munição (empilhável) do inventário | Tambor de 6 balas; balas por caixa encontrada *\[a definir\]* |
 | Coleta de itens | Itens encontrados no cenário vão para o inventário ao apertar E perto deles; com o inventário cheio o item fica no chão | Tecla E, até 1,5 m do item |
@@ -277,6 +279,7 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 | WalkBack (andando para trás) | S pressionado (clipe Walk tocado ao contrário) | 25 frames (1,0 s, loop) | Idle, Walk, Run |
 | Punch (soco) | Mouse Esq. sem mirar | 22 frames (0,9 s) | Idle, Walk, Run, WalkBack |
 | Mira | Mouse Dir. com o revólver equipado: Idle com o braço direito estendido e o revólver na mão (pose feita por código) | — | Idle, Walk, Run, WalkBack |
+| Tiro | Mouse Esq. mirando: o braço dá um coice de 25° para cima (mais na mão que no ombro) e volta em ~0,2 s; clarão laranja com luz no cano por 0,05 s; a bala sai do cano com rastro (feito por código) | — | Mira |
 | Death (morte) | Vida chega a zero | 50 frames (2,1 s) | — |
 
 *\[Opcional: insira aqui a imagem/concept do personagem ou a máquina de estados do Animator.\]*
@@ -287,7 +290,7 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 
 | Nome | Comportamento / IA | Dano / efeito | Como derrotar / evitar | Fases |
 | :---- | :---- | :---- | :---- | :---- |
-| Zumbi | Parado até o detetive chegar a 10 m; então vira para ele e persegue (1,2 m/s); a 1,3 m ataca uma vez a cada 1,5 s | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Cemitério |
+| Zumbi | Perambula devagar (0,5 m/s) a até 4 m de onde nasceu. Percebe o detetive se o vê (até 10 m, cone de 120° à frente, sem túmulo/parede no meio), se ele chega a 3 m ou se leva dano; então persegue (1,2 m/s) desviando de túmulos e cercas. A 1,3 m ataca uma vez a cada 1,5 s. Desiste com o detetive a mais de 18 m e volta para perto de onde nasceu. Ao morrer, toca Death (1,5 s: recua, os joelhos cedem e cai de bruços); o corpo fica no chão, sem colisão e sem ser alvo da mira. Animações: Idle; Walk (1,0 s, loop) mancando, arrastando a perna direita e com os braços esticados para frente, mais lento ao perambular; Attack (1,2 s) ergue os braços e golpeia para baixo, e o dano sai no golpe (0,45 s) se o detetive ainda estiver a até 1,6 m | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Cemitério (5: leste, oeste, nordeste, noroeste e frente da cripta) |
 | Esqueleto | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
 | Ghoul | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
 |  |  |  |  |  |
@@ -409,11 +412,21 @@ Clima: o cenário é frio e arroxeado; o âmbar aparece só onde há fogo e luz 
 
 | Ação / evento | Efeito sonoro | Fonte / autor |
 | :---- | :---- | :---- |
-| *\[Pulo\]* | *\[jump.wav\]* | *\[Autor — site\]* |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| Passos do detetive (andando a cada 0,5 s, correndo a cada 0,45 s): calcanhar, sola e ponta do pé em terra com cascalho | passo_1 a passo_6 (sorteado) | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Tiro do revólver | tiro.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Gatilho sem balas | tiro_vazio.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Recarregar (R) | recarga.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Soco (movimento / acerto) | soco_ar.wav / soco_acerto.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Detetive leva dano / morre | detetive_dano.wav / detetive_morte.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Zumbi gemendo (a cada 5–12 s) | zumbi_gemido_1 a 3 (sorteado) | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Zumbi avista o detetive | zumbi_rosnado.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Zumbi ataca (golpe em 0,45 s, junto com o dano) | zumbi_ataque.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Zumbi leva dano / morre (corpo bate no chão em 1,25 s) | zumbi_dor.wav / zumbi_morte.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Porta da casa do coveiro abrindo | porta_abrindo.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Porta trancada / destrancada com a chave | trancado.wav / destrancar.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+| Pegar item | item_pegar.wav | Sintetizado por código (Assets/Audio/Source~/gerar_sons.py) |
+
+Os sons tocam com pequena variação de pitch a cada vez, para não soarem repetidos.
 
 # **11\. Escopo do Projeto** {#11.-escopo-do-projeto}
 

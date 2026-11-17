@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Cemetery Gates.slnx"
+    "dotnet.defaultSolution": "Cemetery-Gates.slnx"
 }

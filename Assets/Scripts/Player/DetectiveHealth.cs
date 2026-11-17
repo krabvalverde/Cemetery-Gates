@@ -3,6 +3,8 @@ using UnityEngine;
 public class DetectiveHealth : MonoBehaviour
 {
     [SerializeField] int maxHits = 10;
+    [SerializeField] AudioClip hurtSound;
+    [SerializeField] AudioClip deathSound;
 
     public int Current { get; private set; }
     public int Max => maxHits;
@@ -23,6 +25,7 @@ public class DetectiveHealth : MonoBehaviour
     {
         if (Current == 0) return;
         Current = Mathf.Max(0, Current - hits);
+        Sfx.Play(Current == 0 ? deathSound : hurtSound, transform.position);
         if (Current == 0) GetComponent<DetectiveMovement>().Play("Death");
     }
 }

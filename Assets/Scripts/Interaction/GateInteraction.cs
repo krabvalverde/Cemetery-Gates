@@ -6,6 +6,7 @@ public class GateInteraction : MonoBehaviour
 {
     [SerializeField] float interactDistance = 2.5f;
     [SerializeField] KeyCode interactKey = KeyCode.E;
+    [SerializeField] AudioClip openSound;
 
     Animation[] leaves;
     Collider blocker;
@@ -50,6 +51,7 @@ public class GateInteraction : MonoBehaviour
     public void Open()
     {
         opened = true;
+        Sfx.Play(openSound, transform.position, 1f, 0.03f);
         foreach (var leaf in leaves) leaf.Play();
         if (blocker) blocker.enabled = false;
     }

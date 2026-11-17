@@ -49,6 +49,7 @@ MonoBehaviour:
   item: {fileID: 11400000, guid: 59463f1669f0d9943909af02eb31d870, type: 2}
   count: 1
   pickupDistance: 1.5
+  pickupSound: {fileID: 8300000, guid: 332318c384b31fe419e34bd4d0aa7c8f, type: 3}
 --- !u!1 &5514661881618256746
 GameObject:
   m_ObjectHideFlags: 0

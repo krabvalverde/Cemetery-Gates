@@ -6,21 +6,56 @@ using UnityEngine;
 public class CameraZone : MonoBehaviour
 {
     [SerializeField] Camera zoneCamera;
+    [SerializeField, Range(0f, 0.4f)] float edgeMargin = 0.12f; // fração do quadro que conta como "borda"
+    [SerializeField] float panSpeed = 5f;
 
     static Camera active;
+    static Transform player;
+    Quaternion homeRotation;
 
     void Awake()
     {
         GetComponent<BoxCollider>().isTrigger = true;
         zoneCamera.gameObject.SetActive(false);
+        homeRotation = zoneCamera.transform.rotation;
     }
 
     void Start()
     {
         // Trigger não garante OnTriggerEnter para quem já começa dentro: ativa a zona inicial na mão.
-        var player = FindAnyObjectByType<DetectiveMovement>();
-        if (player && GetComponent<BoxCollider>().bounds.Contains(player.transform.position + Vector3.up))
+        var movement = FindAnyObjectByType<DetectiveMovement>();
+        if (!movement) return;
+        player = movement.transform;
+        if (GetComponent<BoxCollider>().bounds.Contains(player.position + Vector3.up))
             Activate();
+    }
+
+    void LateUpdate()
+    {
+        if (active == zoneCamera) KeepPlayerInFrame(1f - Mathf.Exp(-panSpeed * Time.deltaTime));
+    }
+
+    // Rede de segurança: a câmera não sai do lugar, só gira o mínimo para o detetive não sair do quadro.
+    void KeepPlayerInFrame(float blend)
+    {
+        if (!player) return;
+        Transform cam = zoneCamera.transform;
+        Vector3 target = player.position + Vector3.up;
+        Vector3 v = zoneCamera.WorldToViewportPoint(target);
+        Quaternion wanted;
+        if (v.z <= 0f)
+        {
+            wanted = Quaternion.LookRotation(target - cam.position);
+        }
+        else
+        {
+            var inside = new Vector3(Mathf.Clamp(v.x, edgeMargin, 1f - edgeMargin), Mathf.Clamp(v.y, edgeMargin, 1f - edgeMargin), v.z);
+            if (inside == v) return;
+            Vector3 from = zoneCamera.ViewportPointToRay(inside).direction;
+            Vector3 forward = Quaternion.FromToRotation(from, target - cam.position) * cam.forward;
+            wanted = Quaternion.LookRotation(forward, Vector3.up);
+        }
+        cam.rotation = Quaternion.Slerp(cam.rotation, wanted, blend);
     }
 
     void OnTriggerEnter(Collider other)
@@ -34,6 +69,8 @@ public class CameraZone : MonoBehaviour
         if (active) active.gameObject.SetActive(false);
         zoneCamera.gameObject.SetActive(true);
         active = zoneCamera;
+        zoneCamera.transform.rotation = homeRotation;
+        KeepPlayerInFrame(1f); // já entra com o detetive no quadro, sem esperar o giro
     }
 
     void OnDrawGizmos()

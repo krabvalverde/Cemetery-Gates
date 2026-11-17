@@ -5,6 +5,7 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] ItemData item;
     [SerializeField] int count = 1;
     [SerializeField] float pickupDistance = 1.5f;
+    [SerializeField] AudioClip pickupSound;
 
     Inventory inventory;
 
@@ -34,6 +35,7 @@ public class ItemPickup : MonoBehaviour
         }
 
         InventoryUI.ShowMessage(count > 1 ? $"Você pegou {item.itemName} ({count})." : $"Você pegou {item.itemName}.");
+        Sfx.Play(pickupSound, transform.position, 0.8f);
         Destroy(gameObject);
     }
 

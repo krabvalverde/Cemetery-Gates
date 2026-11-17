@@ -6,6 +6,7 @@ public class HingedDoor : MonoBehaviour
     [SerializeField] float openAngle = 95f;
     [SerializeField] float duration = 1.2f;
     [SerializeField] Collider blocker;
+    [SerializeField] AudioClip openSound;
 
     bool opened;
 
@@ -14,6 +15,7 @@ public class HingedDoor : MonoBehaviour
         if (opened) return;
         opened = true;
         if (blocker) blocker.enabled = false;
+        Sfx.Play(openSound, transform.position, 1f, 0.05f);
         StartCoroutine(Swing());
     }
 

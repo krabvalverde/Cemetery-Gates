@@ -9,6 +9,8 @@ public class ItemUseTarget : MonoBehaviour
     [TextArea] [SerializeField] string lockedMessage = "Está trancado.";
     [TextArea] [SerializeField] string usedMessage = "Funcionou.";
     [SerializeField] UnityEvent onUsed;
+    [SerializeField] AudioClip lockedSound;
+    [SerializeField] AudioClip usedSound;
 
     Transform player;
     bool done;
@@ -22,6 +24,7 @@ public class ItemUseTarget : MonoBehaviour
     void Update()
     {
         if (done || InventoryUI.IsOpen || !player || !Input.GetKeyDown(KeyCode.E) || !InRange(player.position)) return;
+        Sfx.Play(lockedSound, transform.position);
         InventoryUI.ShowMessage(lockedMessage);
     }
 
@@ -31,6 +34,7 @@ public class ItemUseTarget : MonoBehaviour
     {
         done = true;
         if (consumeItem) inventory.RemoveOne(requiredItem);
+        Sfx.Play(usedSound, transform.position);
         onUsed.Invoke();
         return usedMessage;
     }

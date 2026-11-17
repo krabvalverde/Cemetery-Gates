@@ -48,6 +48,7 @@ MonoBehaviour:
   item: {fileID: 11400000, guid: c489d7173c341bc488651de66c370501, type: 2}
   count: 1
   pickupDistance: 1.5
+  pickupSound: {fileID: 8300000, guid: 332318c384b31fe419e34bd4d0aa7c8f, type: 3}
 --- !u!1001 &1857169509493653451
 PrefabInstance:
   m_ObjectHideFlags: 0
