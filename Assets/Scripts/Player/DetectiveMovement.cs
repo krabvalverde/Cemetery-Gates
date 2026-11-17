@@ -10,6 +10,8 @@ public class DetectiveMovement : MonoBehaviour
     [SerializeField] float gravity = -20f;
 
     CharacterController controller;
+    DetectiveCombat combat;
+    DetectiveHealth health;
     Animator animator;
     float verticalVelocity;
     string currentState = "Idle";
@@ -17,12 +19,16 @@ public class DetectiveMovement : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        combat = GetComponent<DetectiveCombat>();
+        health = GetComponent<DetectiveHealth>();
         animator = GetComponentInChildren<Animator>();
         animator.applyRootMotion = false;
     }
 
     void Update()
     {
+        if (combat.Busy || health.Current == 0) return;
+
         float v = Input.GetAxisRaw("Vertical");
         float h = Input.GetAxisRaw("Horizontal");
         bool running = v > 0f && Input.GetKey(KeyCode.LeftShift);
@@ -40,7 +46,7 @@ public class DetectiveMovement : MonoBehaviour
         else Play("Idle");
     }
 
-    void Play(string state)
+    public void Play(string state)
     {
         if (state == currentState) return;
         currentState = state;

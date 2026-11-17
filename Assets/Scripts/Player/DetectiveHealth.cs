@@ -15,11 +15,14 @@ public class DetectiveHealth : MonoBehaviour
 
     public void Heal(int amount)
     {
+        if (Current == 0) return;
         Current = Mathf.Min(maxHits, Current + amount);
     }
 
     public void TakeHit(int hits = 1)
     {
+        if (Current == 0) return;
         Current = Mathf.Max(0, Current - hits);
+        if (Current == 0) GetComponent<DetectiveMovement>().Play("Death");
     }
 }

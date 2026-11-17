@@ -29,6 +29,8 @@ public class Inventory : MonoBehaviour
 
     public bool Has(ItemData item) => slots.Exists(s => s.item == item);
 
+    public int Count(ItemData item) => slots.Find(s => s.item == item)?.count ?? 0;
+
     public void RemoveOne(ItemData item)
     {
         var slot = slots.Find(s => s.item == item);

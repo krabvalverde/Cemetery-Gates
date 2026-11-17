@@ -49,6 +49,8 @@ Sobreviva ou morra
 | 1.8 | 05/11/2026 | Rafaela | Movimentação do detetive (tank controls, valores) e estados de animação |
 | 1.9 | 05/11/2026 | Rafaela | Cenário: chão uniforme e sem caminho de pedras na frente do portão |
 | 2.0 | 12/11/2026 | Rafaela | Sistema de inventário (coletar, usar, analisar, descartar), itens no cenário e tela do inventário |
+| 2.1 | 15/11/2026 | Rafaela | Combate: soco e revólver (mira, munição, recarga), sem defesa nem esquiva; vida e IA básica dos inimigos |
+| 2.2 | 15/11/2026 | Rafaela | Mira: o detetive sempre aponta o revólver ao segurar Mouse Dir., mesmo sem inimigos, e pode atirar em qualquer direção |
 
 **Sumário**
 
@@ -211,8 +213,9 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Movimentação (tank controls) | W, A, S, D |  |
 | Inventário (abrir/fechar) | I (Esc também fecha) |  |
 | Navegar no inventário | Mouse, ou setas + Enter |  |
-| Mirar (segurar) | Mouse Dir. |  |
-| Ataque/ Tiro | Mouse Esq. |  |
+| Mirar (segurar, com o revólver equipado) | Mouse Dir. |  |
+| Ataque/ Tiro | Mouse Esq. (soco; tiro enquanto mira) |  |
+| Recarregar o revólver | R |  |
 | Interagir | E |  |
 | Ação contextual | Espaço |  |
 | Correr | Shift |  |
@@ -223,10 +226,11 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 
 | Mecânica | Descrição | Parâmetros (valores) |
 | :---- | :---- | :---- |
-| Vida | O detetive aguenta um número limitado de golpes; ao chegar a zero, game over | 10 hits |
+| Vida | O detetive aguenta um número limitado de golpes; ao chegar a zero ele cai (animação Death), para de responder e os inimigos param de atacar; game over | 10 hits |
 | Tank controls | W/S andam para frente/trás, A/D giram o personagem no lugar; Shift corre (só para frente) | Andar 1,6 m/s; correr 3,8 m/s; ré 1,1 m/s; giro 150°/s |
-| Atirar com a arma (mira com auto-trava) | Segurar Mouse Dir. deixa o personagem parado e trava a mira no inimigo mais próximo à frente; Mouse Esq. atira com o revólver | A definir |
-| Bater com objetos (corpo a corpo) | Ataque sem mirar contra inimigos próximos, usando objetos | Objetos e valores a definir |
+| Atirar com a arma (mira com auto-trava) | Com o revólver equipado, segurar Mouse Dir. deixa o personagem parado, com o braço estendido e o revólver apontado para frente, mesmo sem inimigos por perto. Sem alvo, A/D giram o detetive (150°/s) para mirar em qualquer direção; se houver inimigo à frente, a mira trava nele. Mouse Esq. atira a qualquer momento enquanto mira. Sem balas no tambor, aparece a mensagem para recarregar | Dano 5 (inimigo comum cai com 2 tiros); tambor de 6 balas; alcance 15 m; trava em inimigos até 60° à frente; 0,6 s entre tiros |
+| Soco (corpo a corpo) | Sem mirar (ou sem o revólver equipado), Mouse Esq. dá um soco; o detetive fica parado durante o golpe. Não há defesa nem esquiva | Dano 2 (inimigo comum cai com 5 socos); alcance de \~1 m à frente; 0,9 s por soco |
+| Recarregar | Com o revólver equipado, R completa o tambor usando balas do item Munição (empilhável) do inventário | Tambor de 6 balas; balas por caixa encontrada *\[a definir\]* |
 | Coleta de itens | Itens encontrados no cenário vão para o inventário ao apertar E perto deles; com o inventário cheio o item fica no chão | Tecla E, até 1,5 m do item |
 | Inventário | 10 espaços, um item por espaço, sem peso; galhos especiais empilham no mesmo espaço; itens podem ser guardados, descartados ou arremessados no cenário. A tela do inventário pausa o jogo e mostra a condição (vida) e a arma equipada. Ações sobre o item escolhido: **Usar**, **Analisar** (mostra o texto explicativo do item) e **Descartar** (larga o item no chão, e ele pode ser pego de novo; itens sem modelo no mundo não podem ser largados) | 10 espaços |
 | Usar item | Perto de um ponto do cenário que aceita aquele item (ex.: porta trancada), o item é usado nele e a história avança (a chave é consumida e a porta abre). Fora disso: arma equipa/guarda; item de cura restaura vida (não é gasto com a vida cheia) | Alcance de 2,2 m do ponto |
@@ -239,6 +243,10 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 
 * Atirar em um inimigo causa dano.
 
+* Socar um inimigo causa dano (menos que o tiro, mas não gasta munição).
+
+* Gerenciar a munição: o tambor esvazia e só é recarregado com balas encontradas.
+
 * Guardar ou descartar itens (gerenciamento de inventário).
 
 * Levar um golpe reduz a vida.
@@ -247,7 +255,7 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 
 ## **3.4 Colisão e física** {#3.4-colisão-e-física}
 
-*\[Quais interações físicas existem (pulo, gravidade, projéteis, empurrar objetos, dano por contato) e como foram implementadas (colliders, rigidbody, triggers, camadas). Se o jogo não usar física — ex.: puzzle —, explique quais mecânicas ocupam esse papel.\]*
+Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo). O tiro do revólver é um raycast a partir do peito do detetive em direção ao inimigo travado (ou para frente, sem alvo): paredes e objetos do cenário bloqueiam a bala. O soco testa uma esfera pequena logo à frente do detetive no momento do golpe. Os inimigos causam dano ao chegar a 1,3 m do detetive.
 
 # **4\. Personagem Principal** {#4.-personagem-principal}
 
@@ -267,6 +275,9 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Walk (andando) | W pressionado, ou girando no lugar com A/D | 25 frames (1,0 s, loop) | Idle, Run, WalkBack |
 | Run (correndo) | W + Shift | 21 frames (0,9 s, loop) | Idle, Walk, WalkBack |
 | WalkBack (andando para trás) | S pressionado (clipe Walk tocado ao contrário) | 25 frames (1,0 s, loop) | Idle, Walk, Run |
+| Punch (soco) | Mouse Esq. sem mirar | 22 frames (0,9 s) | Idle, Walk, Run, WalkBack |
+| Mira | Mouse Dir. com o revólver equipado: Idle com o braço direito estendido e o revólver na mão (pose feita por código) | — | Idle, Walk, Run, WalkBack |
+| Death (morte) | Vida chega a zero | 50 frames (2,1 s) | — |
 
 *\[Opcional: insira aqui a imagem/concept do personagem ou a máquina de estados do Animator.\]*
 
@@ -276,9 +287,9 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 
 | Nome | Comportamento / IA | Dano / efeito | Como derrotar / evitar | Fases |
 | :---- | :---- | :---- | :---- | :---- |
-| *\[Slime\]* | *\[Patrulha entre dois pontos; vira ao bater na parede\]* | *\[1 de vida\]* | *\[Pular em cima\]* | *\[1, 2\]* |
-|  |  |  |  |  |
-|  |  |  |  |  |
+| Zumbi | Parado até o detetive chegar a 10 m; então vira para ele e persegue (1,2 m/s); a 1,3 m ataca uma vez a cada 1,5 s | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Cemitério |
+| Esqueleto | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
+| Ghoul | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
 |  |  |  |  |  |
 
 ## **5.1 Chefe (se houver)** {#5.1-chefe-(se-houver)}
@@ -293,6 +304,7 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Galho especial | Inserido no extrator (áreas seguras), vira óleo para o lampião e permite salvar o jogo; empilha no inventário | Consumido ao salvar (1 por save) | *\[A definir\]* |
 | Revólver | Arma do detetive; equipada pelo inventário | Permanente | Inventário inicial |
 | Chave da casa do coveiro | Destranca a porta da casa do coveiro | Consumida ao usar | Cemitério, ao lado da cova aberta perto da casa do coveiro |
+| Munição | Balas do revólver; empilha no inventário; R recarrega o tambor de 6 | Consumida ao recarregar | *\[A definir\]* |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
