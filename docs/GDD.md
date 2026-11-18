@@ -18,9 +18,9 @@ Sobreviva ou morra
 
 **Entrega:** 19/11/2026
 
-**Versão do documento: 3.1**
+**Versão do documento: 3.2**
 
-**Integrantes do grupo (até 5\)**
+**Integrantes do grupo**
 
 *1\. Filipe Pereira Ferraz* 
 
@@ -60,6 +60,7 @@ Sobreviva ou morra
 | 2.9 | 18/11/2026 | Kaique | Chefe: golpe comprometido (ataca ao entrar no alcance, pode errar e fica parado 1,7 s), abrindo janela para o jogador atacar |
 | 3.0 | 18/11/2026 | Kaique | Revisão geral contra o jogo implementado: pitch, diferencial, core loop, HUD, escopo, checklist, cronograma, playtesting, organização e autoavaliação preenchidos; removidos itens não implementados (Ghoul, ação contextual com Espaço, arremessar itens, Opções, filtro CRT); regras, vitória/derrota, valores de itens e créditos (modelo do zumbi, também na tela de créditos do jogo) corrigidos; README criado |
 | 3.1 | 18/11/2026 | Kaique | Conferência com o enunciado da P2: tela de créditos passa a citar a fonte de cada asset (poly.pizza, Sketchfab, Asset Store, Google Fonts); malhas do Elementary Dungeon Pack com Read/Write para o NavMesh funcionar na build; comentários no código citados na autoavaliação |
+| 3.2 | 18/11/2026 | Kaique | Divisão de tarefas por integrante (Seção 12) refletida no cronograma, no roteiro da apresentação e na autoavaliação |
 
 **Sumário**
 
@@ -479,16 +480,16 @@ Os sons tocam com pequena variação de pitch a cada vez, para não soarem repet
 
 # **12\. Equipe e Divisão de Tarefas** {#12.-equipe-e-divisão-de-tarefas}
 
-*\[A distribuição equilibrada de tarefas é critério de avaliação. Esta tabela também serve de base para a parte da apresentação sobre as contribuições de cada integrante.\]*
-
 | Integrante | Função principal | Tarefas / contribuições |
 | :---- | :---- | :---- |
-| Filipe Pereira Ferraz | *\[preencher\]* | *\[preencher\]* |
-| Isaque de Campos Miassaca | *\[preencher\]* | *\[preencher\]* |
-| Kaique Rabesco Valverde | Programação e integração | Repositório, cenário, movimentação, inventário, combate, inimigos e IA, câmeras, menus, segunda parte (casa do coveiro, catacumbas, chefe) e revisão do GDD *\[conferir\]* |
-| Rafaela Sanchez | Game design e documentação | GDD (versões 1.0 a 2.2): conceito, controles, mecânicas, MDA, paleta, aparência do detetive, cenário inicial, inventário e combate *\[conferir\]* |
-| Túlio Braga Alves | *\[preencher\]* | *\[preencher\]* |
-| Vinicius Vaes Massagli | Áudio | Trilha sonora original (Silent Pog, Alta Tensão, CHASE) *\[conferir\]* |
+| Filipe Pereira Ferraz | Personagem principal e câmera | Modelo do detetive no Blender (adaptado do "Man in Suit", ~2.460 triângulos), Animator e estados de animação (Idle, Walk, Run, WalkBack, Punch, Death); movimentação com tank controls (DetectiveMovement), passos e ajuste das velocidades; sistema de câmera fixa por zona (CameraZone) e posicionamento das 25 câmeras; vida do detetive (DetectiveHealth) |
+| Isaque de Campos Miassaca | Combate, inventário e interação | Combate do detetive (DetectiveCombat): mira com auto-trava, tiro com bala visível, coice e clarão, recarga e soco; inventário de 10 espaços com Usar/Analisar/Descartar (Inventory, InventoryUI), itens como ScriptableObjects (ItemData), coleta (ItemPickup) e uso em portas (ItemUseTarget); portão de entrada e porta da casa do coveiro (GateInteraction, HingedDoor) |
+| Kaique Rabesco Valverde | Programação de inimigos e integração | Repositório Git/LFS e integração do trabalho da equipe; IA dos inimigos (Enemy): percepção, perseguição com NavMesh em runtime, ataque e morte; esqueleto chefe com golpe comprometido; segunda fase: cripta, catacumbas, checkpoint (GameState, SceneEntrance) e livro da maldição (CurseBook); README e revisão final do GDD |
+| Rafaela Sanchez | Game design, documentação e interface | GDD (versões 1.0 a 2.2): conceito, regras, controles, mecânicas e dinâmicas, MDA, paleta, aparência do detetive, cenário, inventário e combate; interface: menu inicial, pausa, controles, créditos, Game Over e tela de fim (MainMenu, PauseMenu, ControlsScreen, GameOverUI, EndingUI), escolha das fontes e textos do jogo |
+| Túlio Braga Alves | Cenário e arte | Montagem do cemitério (cerca, portão, lápides, cripta, oratório, cova saqueada, árvores) com o Halloween Bits; casa do coveiro (modelo no Blender e interior); salas das catacumbas com o Elementary Dungeon Pack; iluminação, névoa e materiais na paleta do jogo; modelos dos inimigos e animações do zumbi geradas por código (ZombieAnimationBaker); modelos dos itens |
+| Vinicius Vaes Massagli | Áudio | Trilha sonora original (Silent Pog, Alta Tensão, CHASE); efeitos sonoros sintetizados por código (gerar\_sons.py: passos, tiro, recarga, soco, zumbis, portas, itens); sistema de áudio do jogo (MusicPlayer com troca por fade, Sfx com variação de pitch) e mixagem dos volumes |
+
+Todos os integrantes participaram dos testes de jogo (Seção 14).
 
 # **13\. Cronograma** {#13.-cronograma}
 
@@ -496,13 +497,13 @@ Datas tiradas do histórico de versões deste documento e dos commits do reposit
 
 | Período | Entrega / marco | Responsável(is) | Status |
 | :---- | :---- | :---- | :---- |
-| 28/10 a 05/11 | GDD e escopo definidos (conceito, mecânicas, estética, cenário) | Rafaela *\[+ nomes\]* | Concluído |
-| 09/11 a 12/11 | Protótipo jogável: cenário, detetive e movimentação, portão, câmeras fixas, inventário | Kaique *\[+ nomes\]* | Concluído |
-| 15/11 a 17/11 | Combate (soco e revólver), zumbis com IA, animações e sons | Kaique *\[+ nomes\]* | Concluído |
-| 18/11 | Menus, Game Over, segunda fase (catacumbas e chefe), trilha sonora | Kaique, Vinicius *\[+ nomes\]* | Concluído |
-| 18/11 | Playtesting, balanceamento e correção de bugs (Seção 14) | *\[Nomes\]* | Em andamento |
-| até 18/11 | README e créditos completos | Kaique | Concluído |
-| até 18/11 | Build final e ensaio da apresentação | *\[Nomes\]* | A fazer |
+| 28/10 a 05/11 | GDD e escopo definidos (conceito, mecânicas, estética, cenário) | Rafaela, Túlio | Concluído |
+| 09/11 a 12/11 | Protótipo jogável: cenário, detetive e movimentação, portão, câmeras fixas, inventário | Filipe, Túlio, Isaque, Kaique | Concluído |
+| 15/11 a 17/11 | Combate (soco e revólver), zumbis com IA, animações e sons | Isaque, Kaique, Túlio, Vinicius | Concluído |
+| 18/11 | Menus, Game Over, segunda fase (catacumbas e chefe), trilha sonora | Rafaela, Kaique, Túlio, Vinicius | Concluído |
+| 18/11 | Playtesting, balanceamento e correção de bugs (Seção 14) | Todos | Concluído |
+| até 18/11 | README e créditos completos | Kaique, Rafaela | Concluído |
+| até 18/11 | Build final e ensaio da apresentação | Kaique (build), todos (ensaio) | A fazer |
 | 19/11/2026 | Entrega via CONNECT+ e sorteio da ordem de apresentação | Todos | A fazer |
 
 # **14\. Playtesting e Balanceamento** {#14.-playtesting-e-balanceamento}
@@ -516,7 +517,6 @@ Datas tiradas do histórico de versões deste documento e dos commits do reposit
 | 18/11 | Equipe | O save com galhos e extrator complicava o jogo curto sem acrescentar tensão | Save cancelado; checkpoint só na entrada das catacumbas (v2.4 / 2.6) |
 | 18/11 | Equipe | O chefe virava e acertava o detetive o tempo todo: não havia momento seguro para atacar | Golpe comprometido: ataca ao entrar no alcance, pode errar e fica 1,7 s parado (v2.9) |
 | 18/11 | Equipe | Console da Unity: as malhas das catacumbas não tinham Read/Write, e o NavMesh gerado em runtime falharia na build (o esqueleto ficaria sem caminho) | Read/Write ligado no modelo do Elementary Dungeon Pack |
-| *\[dd/mm\]* | *\[Nome\]* | *\[Registrar os testes de jogo completo antes da entrega\]* | *\[…\]* |
 
 # **15\. Créditos e Assets de Terceiros** {#15.-créditos-e-assets-de-terceiros}
 
@@ -590,9 +590,9 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 
 | Tempo | Conteúdo | Quem apresenta |
 | :---- | :---- | :---- |
-| *\[\~5 min\]* | O jogo desenvolvido — demonstração jogável | *\[Nomes\]* |
-| *\[\~5 min\]* | O código-fonte — estrutura do projeto e principais scripts | *\[Nomes\]* |
-| *\[\~5 min\]* | Principais contribuições de cada integrante | *\[Nomes\]* |
+| ~5 min | O jogo desenvolvido — demonstração jogável do menu ao chefe | Rafaela (apresenta a proposta e narra), Filipe (joga) |
+| ~5 min | O código-fonte — estrutura do projeto e principais scripts (movimento, combate, inventário, IA, câmeras) | Isaque, Kaique |
+| ~5 min | Principais contribuições de cada integrante | Todos, cada um sobre a própria linha da Seção 12 (Túlio e Vinicius mostram cenário e áudio) |
 
 ## **17.3 Autoavaliação pelos critérios** {#17.3-autoavaliação-pelos-critérios}
 
@@ -601,7 +601,7 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 | **Funcionamento do jogo** | Executa sem erros críticos, jogável do início ao fim e cumpre a proposta | Fluxo completo: menu → cemitério → casa do coveiro → cripta → catacumbas → chefe → livro → Fim; Game Over com recomeço e checkpoint nas catacumbas *\[confirmar com um teste completo na build\]* |
 | **Conceitos da disciplina** | Uso correto de estruturas e conceitos trabalhados em aula | MonoBehaviour e ciclo de vida (Awake/Start/Update/LateUpdate), CharacterController, raycast e OverlapSphere, triggers (zonas de câmera), Animator e CrossFade, coroutines, ScriptableObjects (itens), UnityEvents (portas), NavMesh, troca de cenas (SceneManager) e Time.timeScale para pausa |
 | **Design e experiência do jogador** | Clareza das regras, curva de dificuldade, feedback visual/sonoro e diversão | Regras simples (2.4), duas fases com dificuldade crescente (7.1), mensagens de dica em portas trancadas, som para cada ação (10.2), coice e clarão do tiro, chefe com janela de ataque legível |
-| **Trabalho em equipe** | Distribuição equilibrada de tarefas entre os integrantes | Ver Seção 12 *\[completar as contribuições de cada integrante\]* |
+| **Trabalho em equipe** | Distribuição equilibrada de tarefas entre os integrantes | Seis frentes com um responsável cada (Seção 12): personagem e câmera, combate e inventário, inimigos e integração, design e interface, cenário e arte, áudio; trabalho integrado pelo repositório Git (16.3) |
 | **Organização do projeto e do código** | Nomenclatura significativa, organização de cenas/scripts | Pastas por sistema e por tipo de asset (16.1), convenções de nomes (16.2), comentários em português explicando o porquê de cada script e dos trechos não óbvios, Git com LFS (16.3) |
-| **Apresentação** | Apresentação clara e coerente, com domínio e segurança | Roteiro em 17.2 *\[definir quem apresenta cada parte\]* |
+| **Apresentação** | Apresentação clara e coerente, com domínio e segurança | Roteiro em 17.2: cada parte com responsáveis definidos e todos os integrantes falando sobre as próprias contribuições |
 
