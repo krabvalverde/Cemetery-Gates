@@ -57,6 +57,7 @@ Sobreviva ou morra
 | 2.6 | 18/11/2026 | Kaique | Mecânica de save cancelada: o jogo não tem save (sem Salvar na pausa, Continuar no menu ou Carregar no Game Over) |
 | 2.7 | 18/11/2026 | Kaique | Segunda parte: interior da casa do coveiro com a chave das catacumbas, cripta como entrada, catacumbas (labirinto e salão), esqueleto chefe, livro da maldição e tela de fim |
 | 2.8 | 18/11/2026 | Kaique | Catacumbas com uma câmera fixa por sala; trilha sonora (menu e fim, cemitério, catacumbas) |
+| 2.9 | 18/11/2026 | Kaique | Chefe: golpe comprometido (ataca ao entrar no alcance, pode errar e fica parado 1,7 s), abrindo janela para o jogador atacar |
 
 **Sumário**
 
@@ -299,13 +300,13 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 | Nome | Comportamento / IA | Dano / efeito | Como derrotar / evitar | Fases |
 | :---- | :---- | :---- | :---- | :---- |
 | Zumbi | Perambula devagar (0,5 m/s) a até 4 m de onde nasceu. Percebe o detetive se o vê (até 10 m, cone de 120° à frente, sem túmulo/parede no meio), se ele chega a 3 m ou se leva dano; então persegue (1,2 m/s) desviando de túmulos e cercas. A 1,3 m ataca uma vez a cada 1,5 s. Desiste com o detetive a mais de 18 m e volta para perto de onde nasceu. Ao morrer, toca Death (1,5 s: recua, os joelhos cedem e cai de bruços); o corpo fica no chão, sem colisão e sem ser alvo da mira. Animações: Idle; Walk (1,0 s, loop) mancando, arrastando a perna direita e com os braços esticados para frente, mais lento ao perambular; Attack (1,2 s) ergue os braços e golpeia para baixo, e o dano sai no golpe (0,45 s) se o detetive ainda estiver a até 1,6 m | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Cemitério (5: leste, oeste, nordeste, noroeste e frente da cripta) |
-| Esqueleto (chefe) | Fica enterrado no centro do salão das catacumbas. Quando o detetive chega a 6 m, surge do chão (Spawn) e grita (Scream) — 2,4 s em que não leva dano nem pode ser alvo da mira — e passa a perseguir correndo (2,0 m/s) sem desistir dentro do salão. A 1,6 m ataca a cada 1,4 s, sorteando entre dois golpes de espada (Slash01, Slash02) e uma estocada (Stab); o dano sai no meio do golpe (0,5 s). Ao morrer, toca Death e o corpo fica no chão. Modelo e animações do pacote Skeleton (Seção 15) | 2 hits por ataque | 40 de vida: 8 tiros ou 20 socos | Catacumbas (salão final) |
+| Esqueleto (chefe) | Fica enterrado no centro do salão das catacumbas. Quando o detetive chega a 6 m, surge do chão (Spawn) e grita (Scream) — 2,4 s em que não leva dano nem pode ser alvo da mira — e passa a perseguir correndo (2,0 m/s) sem desistir dentro do salão. Ao chegar a 1,6 m ataca na hora, sorteando entre dois golpes de espada (Slash01, Slash02) e uma estocada (Stab), e se compromete com o golpe: fica 1,7 s parado e sem virar (golpe + recuperação). O dano sai a 0,5 s, só se o detetive ainda estiver a até 1,9 m e num cone de 120° à frente dele — recuar, correr ou passar para o lado faz o golpe errar, e a recuperação é a janela para atirar. Ao morrer, toca Death e o corpo fica no chão. Modelo e animações do pacote Skeleton (Seção 15) | 2 hits por ataque | 40 de vida: 8 tiros ou 20 socos | Catacumbas (salão final) |
 | Ghoul | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
 |  |  |  |  |  |
 
 ## **5.1 Chefe (se houver)** {#5.1-chefe-(se-houver)}
 
-**Esqueleto, guardião do livro.** 40 de vida (8 tiros); cada golpe tira 2 hits (o detetive aguenta 5). Fase única: surge e grita ao ser despertado, depois persegue e alterna três ataques (dois cortes e uma estocada). Ponto fraco: o tempo entre ataques (1,4 s) e a falta de ataque à distância — dá para atirar recuando. O livro da maldição, no altar atrás dele, só pode ser pego depois que ele cai.
+**Esqueleto, guardião do livro.** 40 de vida (8 tiros); cada golpe tira 2 hits (o detetive aguenta 5). Fase única: surge e grita ao ser despertado, depois persegue e alterna três ataques (dois cortes e uma estocada). Ponto fraco: cada golpe o prende no lugar por 1,7 s, mesmo quando erra, e ele não tem ataque à distância — dá para provocar o golpe, sair do alcance e atirar enquanto ele se recupera. O livro da maldição, no altar atrás dele, só pode ser pego depois que ele cai.
 
 # **6\. Itens, Coletáveis e Power-ups** {#6.-itens,-coletáveis-e-power-ups}
 

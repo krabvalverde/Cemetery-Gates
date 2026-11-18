@@ -29,6 +29,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] string[] attackStates = { "Attack" }; // sorteia um a cada golpe
     [SerializeField] float wakeRange = 0f;    // > 0: fica enterrado até o detetive chegar perto (estados Underground → Spawn → Scream)
     [SerializeField] float wakeDuration = 2.4f; // Spawn + Scream; invulnerável até terminar
+    [SerializeField] float attackCommitTime = 0f; // > 0: o golpe vai até o fim, parado e sem virar, por esse tempo (golpe + recuperação) — a janela do jogador
+    [SerializeField] float hitAngle = 360f;       // cone do golpe (graus): fora dele, o golpe erra
 
     public int Health { get; private set; }
     public bool Emerged => !dormant && Time.time >= awakeAt; // já surgiu: pode ser alvo e levar dano
@@ -47,7 +49,7 @@ public class Enemy : MonoBehaviour
     Vector3 home, destination;
     bool chasing, hasPath;
     int corner;
-    float nextAttack, hitAt, nextRepath, nextWander, nextGroan, verticalVelocity, moveSpeed, awakeAt;
+    float nextAttack, hitAt, nextRepath, nextWander, nextGroan, verticalVelocity, moveSpeed, awakeAt, committedUntil;
     bool dormant;
     string currentState = "Idle";
 
@@ -95,7 +97,11 @@ public class Enemy : MonoBehaviour
         if (chasing)
         {
             Vector3 to = Flat(player.transform.position - transform.position);
-            if (to.magnitude <= attackRange)
+            if (Time.time < committedUntil)
+            {
+                state = "Attack"; // golpe em andamento: não anda nem gira, mesmo que o detetive se afaste
+            }
+            else if (to.magnitude <= attackRange)
             {
                 if (to.sqrMagnitude > 0.0001f) transform.rotation = Quaternion.LookRotation(to);
                 state = "Attack";
@@ -103,6 +109,7 @@ public class Enemy : MonoBehaviour
                 {
                     nextAttack = Time.time + attackCooldown;
                     hitAt = Time.time + attackHitDelay;
+                    committedUntil = Time.time + attackCommitTime;
                     attackNow = true;
                     Sfx.Play(attackSound, transform.position);
                 }
@@ -132,11 +139,12 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // O dano sai no meio do golpe, se o detetive ainda estiver ao alcance.
+        // O dano sai no meio do golpe, se o detetive ainda estiver ao alcance e na frente — senão o golpe erra.
         if (hitAt > 0f && Time.time >= hitAt)
         {
             hitAt = 0f;
-            if (player && player.Current > 0 && Flat(player.transform.position - transform.position).magnitude <= attackRange + 0.3f)
+            Vector3 to = player ? Flat(player.transform.position - transform.position) : Vector3.zero;
+            if (player && player.Current > 0 && to.magnitude <= attackRange + 0.3f && Vector3.Angle(transform.forward, to) <= hitAngle * 0.5f)
                 player.TakeHit(hitsPerAttack);
         }
 

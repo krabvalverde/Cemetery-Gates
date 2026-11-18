@@ -135,7 +135,7 @@ MonoBehaviour:
   loseRange: 30
   wanderRadius: 4
   attackRange: 1.6
-  attackCooldown: 1.4
+  attackCooldown: 1.7
   attackHitDelay: 0.5
   turnSpeed: 360
   gravity: -20
@@ -151,3 +151,5 @@ MonoBehaviour:
   - Stab
   wakeRange: 6
   wakeDuration: 2.4
+  attackCommitTime: 1.7
+  hitAngle: 120
