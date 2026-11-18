@@ -578,7 +578,7 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 
 ☐  Executável / build jogável para PC — *a gerar (File → Build Profiles, Windows, cenas Cemiterio e Catacumbas)*
 
-☐  Projeto completo da engine (.zip) ou link do repositório no GitHub — https\://github.com/krabvalverde/Cemetery-Gates *(a branch main ainda só tem o primeiro commit: juntar a develop na main e enviar ao GitHub antes de entregar, e conferir se o repositório é público)*
+☑  Projeto completo da engine (.zip) ou link do repositório no GitHub — https\://github.com/krabvalverde/Cemetery-Gates (público; branch main atualizada)
 
 ☑  Game Design Document (este documento)
 
