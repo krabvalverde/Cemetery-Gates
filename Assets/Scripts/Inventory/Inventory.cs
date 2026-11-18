@@ -27,6 +27,14 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    public List<(ItemData item, int count)> Snapshot() => slots.ConvertAll(s => (s.item, s.count));
+
+    public void Restore(List<(ItemData item, int count)> saved, ItemData equipped)
+    {
+        slots = saved.ConvertAll(s => new Slot { item = s.item, count = s.count });
+        EquippedWeapon = equipped && Has(equipped) ? equipped : null;
+    }
+
     public bool Has(ItemData item) => slots.Exists(s => s.item == item);
 
     public int Count(ItemData item) => slots.Find(s => s.item == item)?.count ?? 0;

@@ -25,13 +25,20 @@ public class Enemy : MonoBehaviour
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip hurtSound;
     [SerializeField] AudioClip deathSound;
+    [Header("Chefe")]
+    [SerializeField] string[] attackStates = { "Attack" }; // sorteia um a cada golpe
+    [SerializeField] float wakeRange = 0f;    // > 0: fica enterrado até o detetive chegar perto (estados Underground → Spawn → Scream)
+    [SerializeField] float wakeDuration = 2.4f; // Spawn + Scream; invulnerável até terminar
 
     public int Health { get; private set; }
+    public bool Emerged => !dormant && Time.time >= awakeAt; // já surgiu: pode ser alvo e levar dano
     public Vector3 Center => controller.bounds.center;
 
     // ponytail: NavMesh gerado em runtime ao abrir a cena (sem pacote AI Navigation);
     // trocar por NavMeshSurface baked no editor se o tempo de carga crescer.
+    // Gerado de novo ao trocar de cena (cemitério → catacumbas), senão o caminho seria o da cena anterior.
     static NavMeshDataInstance navMesh;
+    static UnityEngine.SceneManagement.Scene navMeshScene;
 
     CharacterController controller;
     Animator animator;
@@ -40,7 +47,8 @@ public class Enemy : MonoBehaviour
     Vector3 home, destination;
     bool chasing, hasPath;
     int corner;
-    float nextAttack, hitAt, nextRepath, nextWander, nextGroan, verticalVelocity, moveSpeed;
+    float nextAttack, hitAt, nextRepath, nextWander, nextGroan, verticalVelocity, moveSpeed, awakeAt;
+    bool dormant;
     string currentState = "Idle";
 
     void Awake()
@@ -59,10 +67,23 @@ public class Enemy : MonoBehaviour
         BakeNavMeshOnce();
         nextWander = Time.time + Random.Range(0f, 4f);
         nextGroan = Time.time + Random.Range(1f, groanInterval.y);
+        dormant = wakeRange > 0f;
+        if (dormant) animator.Play(currentState = "Underground");
     }
 
     void Update()
     {
+        if (dormant)
+        {
+            if (!player || player.Current == 0 || Flat(player.transform.position - transform.position).magnitude > wakeRange) return;
+            dormant = false;
+            awakeAt = Time.time + wakeDuration;
+            animator.CrossFade(currentState = "Spawn", 0.1f);
+            Sfx.Play(alertSound, transform.position);
+            return;
+        }
+        if (Time.time < awakeAt) return; // surgindo e gritando
+        if (currentState == "Spawn") { chasing = true; nextRepath = 0f; }
         verticalVelocity = controller.isGrounded ? -1f : verticalVelocity + gravity * Time.deltaTime;
         Vector3 motion = Vector3.up * verticalVelocity;
         string state = "Idle";
@@ -128,14 +149,14 @@ public class Enemy : MonoBehaviour
         controller.Move(motion * Time.deltaTime);
         Play(state);
         animator.speed = currentState == "Walk" ? moveSpeed / speed : 1f; // passos acompanham a velocidade
-        if (attackNow && currentState == "Attack") animator.Play("Attack", 0, 0f);
+        if (attackNow && currentState == "Attack") animator.Play(attackStates[Random.Range(0, attackStates.Length)], 0, 0f);
     }
 
     public bool Dead => Health <= 0;
 
     public void TakeDamage(int amount)
     {
-        if (Dead) return;
+        if (Dead || !Emerged) return;
         chasing = true;
         Health -= amount;
         Sfx.Play(Dead ? deathSound : hurtSound, transform.position);
@@ -207,7 +228,9 @@ public class Enemy : MonoBehaviour
 
     void BakeNavMeshOnce()
     {
-        if (navMesh.valid) return;
+        if (navMesh.valid && navMeshScene == gameObject.scene) return;
+        if (navMesh.valid) navMesh.Remove();
+        navMeshScene = gameObject.scene;
 
         var area = new Bounds(player ? player.transform.position : transform.position, Vector3.zero);
         foreach (var enemy in FindObjectsByType<Enemy>(FindObjectsInactive.Exclude)) area.Encapsulate(enemy.transform.position);
@@ -230,9 +253,10 @@ public class Enemy : MonoBehaviour
 
     void Play(string state)
     {
-        if (!animator.HasState(0, Animator.StringToHash(state))) state = "Idle";
+        string clip = state == "Attack" ? attackStates[0] : state; // ataque pode ter variações (Slash01, Stab…)
+        if (!animator.HasState(0, Animator.StringToHash(clip))) state = clip = "Idle";
         if (state == currentState) return;
         currentState = state;
-        animator.CrossFade(state, 0.15f);
+        animator.CrossFade(clip, 0.15f);
     }
 }

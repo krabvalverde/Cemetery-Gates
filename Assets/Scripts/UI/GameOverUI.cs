@@ -10,6 +10,7 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] GameObject firstButton;
     [SerializeField] float delay = 2.3f;    // animação Death dura 2,1 s
     [SerializeField] float fadeTime = 1.5f;
+    [SerializeField] string restartLabel = ""; // vazio mantém o texto do botão ("Recomeçar do início")
 
     public static bool IsShowing { get; private set; }
 
@@ -21,6 +22,7 @@ public class GameOverUI : MonoBehaviour
         health = FindAnyObjectByType<DetectiveHealth>();
         screen.gameObject.SetActive(false);
         IsShowing = false;
+        if (restartLabel != "") firstButton.GetComponentInChildren<UnityEngine.UI.Text>().text = restartLabel;
     }
 
     void Update()
@@ -45,6 +47,7 @@ public class GameOverUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstButton);
     }
 
+    // Recarrega a cena atual: no cemitério volta do zero; nas catacumbas o detetive volta com o estado da entrada (GameState).
     public void RestartFromBeginning()
     {
         MainMenu.SkipOnNextLoad = true;

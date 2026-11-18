@@ -405,6 +405,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7937259479887621926}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8039861137464997154}
   m_SourcePrefab: {fileID: 100100000, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}
 --- !u!4 &122764046958172913 stripped
 Transform:
@@ -547,6 +550,18 @@ MonoBehaviour:
   reloadSound: {fileID: 8300000, guid: 20b724e2056290540b6df3122b7a92bb, type: 3}
   punchSound: {fileID: 8300000, guid: 0d3b5130b3bf93848956e3265eaffe66, type: 3}
   punchHitSound: {fileID: 8300000, guid: 5df16be88d4c5bc41b7ac0dad1ba6ca1, type: 3}
+--- !u!114 &8039861137464997154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8147283387115180500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5c84e13eabe8c24ca95434b70b027ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ApplyGameStateOnStart
 --- !u!4 &8816684399346142062 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 361eb46f959cb49408a69e3d145755b2, type: 3}

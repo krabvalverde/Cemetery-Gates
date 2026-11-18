@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject creditsPanel;
     [SerializeField] GameObject firstMenuButton;
     [SerializeField] GameObject creditsBackButton;
+    [SerializeField] bool openOnStart = true; // desligado nas catacumbas: lá o jogo já começa andando
 
     public static bool IsOpen { get; private set; }
     public static bool SkipOnNextLoad; // "Recomeçar do início" recarrega a cena direto no jogo
@@ -19,7 +20,7 @@ public class MainMenu : MonoBehaviour
     {
         var player = FindAnyObjectByType<DetectiveMovement>();
         playerControls = new Behaviour[] { player, player.GetComponent<DetectiveCombat>() };
-        SetOpen(!SkipOnNextLoad);
+        SetOpen(openOnStart && !SkipOnNextLoad);
         SkipOnNextLoad = false;
     }
 

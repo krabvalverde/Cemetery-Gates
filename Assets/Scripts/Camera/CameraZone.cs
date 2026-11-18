@@ -63,6 +63,18 @@ public class CameraZone : MonoBehaviour
         if (other.GetComponent<DetectiveMovement>()) Activate();
     }
 
+    // Zona dentro de outra (interior da casa dentro da área do coveiro): ao sair da ativa, volta para a que ainda contém o detetive.
+    void OnTriggerExit(Collider other)
+    {
+        if (active != zoneCamera || !other.GetComponent<DetectiveMovement>()) return;
+        foreach (var zone in FindObjectsByType<CameraZone>(FindObjectsInactive.Exclude))
+            if (zone != this && zone.GetComponent<BoxCollider>().bounds.Contains(other.transform.position + Vector3.up))
+            {
+                zone.Activate();
+                return;
+            }
+    }
+
     void Activate()
     {
         if (active == zoneCamera) return;

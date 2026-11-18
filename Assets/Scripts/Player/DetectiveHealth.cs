@@ -15,6 +15,8 @@ public class DetectiveHealth : MonoBehaviour
         Current = maxHits;
     }
 
+    public void Restore(int value) => Current = Mathf.Clamp(value, 1, maxHits);
+
     public void Heal(int amount)
     {
         if (Current == 0) return;

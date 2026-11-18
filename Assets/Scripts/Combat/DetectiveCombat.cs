@@ -32,7 +32,7 @@ public class DetectiveCombat : MonoBehaviour
     [SerializeField] AudioClip punchSound;
     [SerializeField] AudioClip punchHitSound;
 
-    public int Loaded { get; private set; }
+    public int Loaded { get; set; }
     public int CylinderSize => cylinderSize;
     public bool Busy => aiming || punching;
 
@@ -106,7 +106,7 @@ public class DetectiveCombat : MonoBehaviour
         float bestDistance = shotRange;
         foreach (var enemy in FindObjectsByType<Enemy>(FindObjectsInactive.Exclude))
         {
-            if (enemy.Dead) continue;
+            if (enemy.Dead || !enemy.Emerged) continue;
             Vector3 to = enemy.transform.position - transform.position;
             to.y = 0f;
             float distance = to.magnitude;

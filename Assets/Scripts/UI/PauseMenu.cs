@@ -28,14 +28,18 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (!Input.GetKeyDown(KeyCode.Escape) || MainMenu.IsOpen || GameOverUI.IsShowing || InventoryUI.IsOpen || ControlsScreen.IsOpen) return;
+        if (!Input.GetKeyDown(KeyCode.Escape) || MainMenu.IsOpen || GameOverUI.IsShowing || EndingUI.IsShowing || InventoryUI.IsOpen || ControlsScreen.IsOpen) return;
         SetOpen(!IsOpen);
     }
 
     public void Resume() => SetOpen(false);
 
-    // Volta ao menu inicial recarregando a cena (ainda não há save para guardar o progresso).
-    public void QuitToMenu() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    // Volta ao menu inicial, que fica no cemitério (o jogo não tem save: o progresso se perde).
+    public void QuitToMenu()
+    {
+        GameState.Clear();
+        SceneManager.LoadScene(GameState.CemeteryScene);
+    }
 
     void SetOpen(bool open)
     {

@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Cemiterio.unity
     guid: 200c67a91947fe945a68b746186bf274
+  - enabled: 1
+    path: Assets/Scenes/Catacumbas.unity
+    guid: aa331362ef8e04544a264377352cfc08
   m_configObjects: {}

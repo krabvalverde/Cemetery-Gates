@@ -55,6 +55,8 @@ Sobreviva ou morra
 | 2.4 | 18/11/2026 | Kaique | Save com galhos e extrator cancelado (galhos removidos do jogo) |
 | 2.5 | 18/11/2026 | Kaique | Cerca: removidos os pilares avulsos que ficavam sobrepostos aos pilares do próprio modelo da cerca e piscavam (z-fighting) |
 | 2.6 | 18/11/2026 | Kaique | Mecânica de save cancelada: o jogo não tem save (sem Salvar na pausa, Continuar no menu ou Carregar no Game Over) |
+| 2.7 | 18/11/2026 | Kaique | Segunda parte: interior da casa do coveiro com a chave das catacumbas, cripta como entrada, catacumbas (labirinto e salão), esqueleto chefe, livro da maldição e tela de fim |
+| 2.8 | 18/11/2026 | Kaique | Catacumbas com uma câmera fixa por sala; trilha sonora (menu e fim, cemitério, catacumbas) |
 
 **Sumário**
 
@@ -242,7 +244,8 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Inventário | 10 espaços, um item por espaço, sem peso; itens empilháveis (ex.: munição) ocupam um espaço só; itens podem ser guardados, descartados ou arremessados no cenário. A tela do inventário pausa o jogo e mostra a condição (vida) e a arma equipada. Ações sobre o item escolhido: **Usar**, **Analisar** (mostra o texto explicativo do item) e **Descartar** (larga o item no chão, e ele pode ser pego de novo; itens sem modelo no mundo não podem ser largados) | 10 espaços |
 | Usar item | Perto de um ponto do cenário que aceita aquele item (ex.: porta trancada), o item é usado nele e a história avança (a chave é consumida e a porta abre). Fora disso: arma equipa/guarda; item de cura restaura vida (não é gasto com a vida cheia) | Alcance de 2,2 m do ponto |
 | Interagir com o cenário | Abrir/usar portas, portões e janelas; num ponto trancado, E mostra uma mensagem de dica | Tecla E |
-| Save | Não há save: ao morrer ou sair para o menu, o jogo recomeça do início | — |
+| Save | Não há save. Morrer no cemitério ou sair para o menu recomeça do início; morrer nas catacumbas recomeça na entrada delas (ver Descer às catacumbas) | — |
+| Descer às catacumbas | Usar a chave das catacumbas (inventário → Usar) diante da porta da cripta carrega as catacumbas. O detetive leva vida, inventário, arma equipada e balas no tambor; a chave é gasta. Morrer lá embaixo recomeça no pé da escada com exatamente esse estado | Sem a chave, E na porta mostra uma dica |
 | Ação contextual | Espaço só funciona em pontos marcados do cenário (sair de buraco, atravessar vão); não há pulo livre | A definir |
 | Lampião a óleo | O detetive carrega um lampião que ilumina em âmbar ao seu redor | A definir |
 
@@ -296,22 +299,27 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 | Nome | Comportamento / IA | Dano / efeito | Como derrotar / evitar | Fases |
 | :---- | :---- | :---- | :---- | :---- |
 | Zumbi | Perambula devagar (0,5 m/s) a até 4 m de onde nasceu. Percebe o detetive se o vê (até 10 m, cone de 120° à frente, sem túmulo/parede no meio), se ele chega a 3 m ou se leva dano; então persegue (1,2 m/s) desviando de túmulos e cercas. A 1,3 m ataca uma vez a cada 1,5 s. Desiste com o detetive a mais de 18 m e volta para perto de onde nasceu. Ao morrer, toca Death (1,5 s: recua, os joelhos cedem e cai de bruços); o corpo fica no chão, sem colisão e sem ser alvo da mira. Animações: Idle; Walk (1,0 s, loop) mancando, arrastando a perna direita e com os braços esticados para frente, mais lento ao perambular; Attack (1,2 s) ergue os braços e golpeia para baixo, e o dano sai no golpe (0,45 s) se o detetive ainda estiver a até 1,6 m | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Cemitério (5: leste, oeste, nordeste, noroeste e frente da cripta) |
-| Esqueleto | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
+| Esqueleto (chefe) | Fica enterrado no centro do salão das catacumbas. Quando o detetive chega a 6 m, surge do chão (Spawn) e grita (Scream) — 2,4 s em que não leva dano nem pode ser alvo da mira — e passa a perseguir correndo (2,0 m/s) sem desistir dentro do salão. A 1,6 m ataca a cada 1,4 s, sorteando entre dois golpes de espada (Slash01, Slash02) e uma estocada (Stab); o dano sai no meio do golpe (0,5 s). Ao morrer, toca Death e o corpo fica no chão. Modelo e animações do pacote Skeleton (Seção 15) | 2 hits por ataque | 40 de vida: 8 tiros ou 20 socos | Catacumbas (salão final) |
 | Ghoul | Igual ao zumbi | 1 hit por ataque | 10 de vida: 2 tiros ou 5 socos | Catacumbas |
 |  |  |  |  |  |
 
 ## **5.1 Chefe (se houver)** {#5.1-chefe-(se-houver)}
 
-*\[Padrões de ataque, fases do chefe, pontos fracos e quantidade de vida.\]*
+**Esqueleto, guardião do livro.** 40 de vida (8 tiros); cada golpe tira 2 hits (o detetive aguenta 5). Fase única: surge e grita ao ser despertado, depois persegue e alterna três ataques (dois cortes e uma estocada). Ponto fraco: o tempo entre ataques (1,4 s) e a falta de ataque à distância — dá para atirar recuando. O livro da maldição, no altar atrás dele, só pode ser pego depois que ele cai.
 
 # **6\. Itens, Coletáveis e Power-ups** {#6.-itens,-coletáveis-e-power-ups}
 
 | Item | Efeito | Duração | Onde aparece |
 | :---- | :---- | :---- | :---- |
-| Item de cura | Restaura vida | *\[Quantidade a definir\]* | *\[A definir\]* |
+| Item de cura (Tônico medicinal) | Restaura vida | *\[Quantidade a definir\]* | Cemitério (1) e catacumbas (2: sala central e sala leste) |
 | Revólver | Arma do detetive; equipada pelo inventário | Permanente | Inventário inicial |
 | Chave da casa do coveiro | Destranca a porta da casa do coveiro | Consumida ao usar | Cemitério, ao lado da cova aberta perto da casa do coveiro |
-| Munição | Balas do revólver; empilha no inventário; R recarrega o tambor de 6 | Consumida ao recarregar | *\[A definir\]* |
+| Munição | Balas do revólver; empilha no inventário; R recarrega o tambor de 6 | Consumida ao recarregar | Catacumbas: 3 caixas de 6 balas (sala de entrada, beco norte e sala leste) |
+| Chave das catacumbas | Abre a cripta e leva às catacumbas | Consumida ao usar | Casa do coveiro, em cima da mesa |
+| Moedas de ouro | Sem utilidade; ocupa um espaço, pode ser analisada e descartada | — | Catacumbas, sala oeste (ao lado do baú) |
+| Relógio de bolso | Sem utilidade; ocupa um espaço, pode ser analisado e descartado | — | Catacumbas, beco sul (em cima da mesa) |
+| Cálice | Sem utilidade; ocupa um espaço, pode ser analisado e descartado | — | Catacumbas, sala nordeste (em cima da mesa) |
+| Livro da maldição | Pegá-lo (E) com o esqueleto morto desfaz a maldição e encerra o jogo | — | Catacumbas, altar do salão |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
@@ -322,7 +330,8 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 
 | Fase / onda | Objetivo | Novidade introduzida | Dificuldade |
 | :---- | :---- | :---- | :---- |
-| *\[Fase 1\]* | *\[Chegar à bandeira\]* | *\[Pulo e primeiro inimigo\]* | *\[Fácil\]* |
+| 1. Cemitério | Achar a chave do coveiro (guardada pelos zumbis), abrir a casa do coveiro e pegar a chave das catacumbas | Zumbis, inventário, revólver e soco | Fácil |
+| 2. Catacumbas | Explorar o labirinto (munição, cura e objetos sem utilidade), vencer o esqueleto e pegar o livro | Chefe, gestão de munição e espaço no inventário | Difícil |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
@@ -345,13 +354,14 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 
 | Tela | Elementos / botões | Leva para |
 | :---- | :---- | :---- |
-| **Menu inicial** | Sobre a própria cena, que fica congelada e escurecida ao fundo (câmera do portão). Título "Cemetery Gates" em letra gótica, subtítulo "sobreviva ou morra" e os botões Iniciar, Controles, Créditos e Sair, em fonte de máquina de escrever (âmbar quando selecionados; mouse ou setas + Enter). Planejados: Opções e música de fundo | Jogo (Iniciar), Controles, Créditos, fecha o jogo (Sair) |
+| **Menu inicial** | Sobre a própria cena, que fica congelada e escurecida ao fundo (câmera do portão). Título "Cemetery Gates" em letra gótica, subtítulo "sobreviva ou morra" e os botões Iniciar, Controles, Créditos e Sair, em fonte de máquina de escrever (âmbar quando selecionados; mouse ou setas + Enter). Música: Silent Pog. Planejado: Opções | Jogo (Iniciar), Controles, Créditos, fecha o jogo (Sair) |
 | **Controles** (pelo menu inicial ou pela pausa) | Cada tecla em âmbar ao lado do que ela faz (W, S, A/D, Shift + W, E, Mouse Esq., Mouse Dir., R, I, Esc), uma dica sobre os tank controls e Voltar (ou Esc) | A tela que abriu (menu inicial ou pausa) |
 | **Opções** | *\[A definir\]* | Menu inicial |
 | **Inventário** (tecla I, pausa o jogo) | 10 espaços, detalhes do item, condição e arma equipada, botões Usar / Analisar / Descartar | Jogo (I ou Esc) |
 | **Pausa** (Esc, pausa o jogo e o som) | Título "Pausa" em letra gótica, a frase "Os mortos também sabem esperar." e os botões Voltar ao jogo, Controles e Sair, no estilo do menu inicial | Jogo (Voltar ao jogo ou Esc), Controles, Menu inicial (Sair; o progresso se perde) |
 | **Vitória** | *\[Pontuação final, Jogar novamente, Menu\]* | *\[Jogo, Menu\]* |
-| **Game over** | Aparece com fade 2,3 s depois da morte (fim da animação Death): "Game Over" em vermelho-sangue, a frase "O detetive tombou entre os túmulos.", Recomeçar do início | Jogo do início, sem passar pelo menu |
+| **Game over** | Aparece com fade 2,3 s depois da morte (fim da animação Death): "Game Over" em vermelho-sangue, a frase "O detetive tombou entre os túmulos." e um botão: Recomeçar do início (cemitério) ou Recomeçar nas catacumbas | Jogo do início, ou entrada das catacumbas com o estado que o detetive tinha ao descer; sem passar pelo menu |
+| **Fim** | Ao pegar o livro da maldição: fade de 2 s para "Fim" em letra gótica (cor osso), a frase "A maldição foi desfeita. Os mortos voltam a descansar." e Voltar ao menu; o jogo congela por trás | Menu inicial |
 | **Créditos** | Integrantes, orientação, modelos 3D, fontes e sons; Voltar (ou Esc) | Menu inicial |
 
 ## **8.2 HUD** {#8.2-hud}
@@ -395,7 +405,11 @@ Clima: o cenário é frio e arroxeado; o âmbar aparece só onde há fogo e luz 
 
 * Tons frios e pouca interação com o ambiente — sensação de solidão, clima sombrio.
 
-**Cenário inicial — Cemitério:** área cercada de \~44 × 36 m, com cerca de ferro e pilares duplos nas emendas, que já fazem parte de cada trecho da cerca (alguns trechos quebrados) e um portão em arco ao sul, por onde o detetive chega. O chão de terra é uniforme. Do portão sai um caminho de pedra até a cripta, ao norte, cruzado por um caminho leste–oeste que termina num oratório com velas. Lápides em quatro quadras irregulares. A casa do coveiro (casebre de madeira, janela acesa, lampião na porta; interior a fazer) fica no canto sudoeste, ao lado de uma cova aberta com um lampião no chão; um portão lateral de serviço fica na cerca oeste. Na quadra nordeste há uma cova saqueada (lápide quebrada, caixão fora da cova e ossos espalhados). Pinheiros e árvores secas cercam o cemitério e somem na névoa. Luz: lua índigo, ambiente roxo profundo e névoa; o âmbar aparece só nos lampiões, velas e na janela do casebre.
+**Cenário inicial — Cemitério:** área cercada de \~44 × 36 m, com cerca de ferro e pilares duplos nas emendas, que já fazem parte de cada trecho da cerca (alguns trechos quebrados) e um portão em arco ao sul, por onde o detetive chega. O chão de terra é uniforme. Do portão sai um caminho de pedra até a cripta, ao norte, cruzado por um caminho leste–oeste que termina num oratório com velas. Lápides em quatro quadras irregulares. A casa do coveiro (casebre de madeira, janela acesa, lampião na porta) fica no canto sudoeste, ao lado de uma cova aberta com um lampião no chão; um portão lateral de serviço fica na cerca oeste. Na quadra nordeste há uma cova saqueada (lápide quebrada, caixão fora da cova e ossos espalhados). Pinheiros e árvores secas cercam o cemitério e somem na névoa. Luz: lua índigo, ambiente roxo profundo e névoa; o âmbar aparece só nos lampiões, velas e na janela do casebre.
+
+**Casa do coveiro — interior:** aberta a chave, a porta dá para um cômodo de \~3,3 × 4,3 m com chaminé de pedra, mesa com a chave das catacumbas, banco, estante, barril e pote, iluminado por um lampião âmbar. Câmera fixa no canto sudeste, sob o telhado; ao sair, volta a câmera de fora.
+
+**Catacumbas:** cena própria, montada com o Elementary Dungeon Pack Lite (pedra acinzentada, tochas com fogo). O detetive chega pelo pé de uma escada. Labirinto curto em grade de \~4,8 m: sala de entrada, sala oeste com beco ao norte, sala central com beco ao sul, sala leste e sala nordeste, ligadas por arcos; antecâmara com corredor até o salão final (3 × 3 módulos, quatro colunas, altar com o livro ao fundo e o esqueleto enterrado no centro). Uma câmera fixa por sala (cada módulo separado por arco tem a sua, no canto do lado por onde se entra; o salão tem uma só). Luz: só tochas âmbar, ambiente quase preto, névoa escura e um brilho lavanda no centro do salão e sobre o livro.
 
 **Origem dos assets:** Ambos — próprios e de terceiros (listados na Seção 15).
 
@@ -407,9 +421,11 @@ Clima: o cenário é frio e arroxeado; o âmbar aparece só onde há fogo e luz 
 
 | Música | Onde toca | Fonte / autor |
 | :---- | :---- | :---- |
-| Tema do menu | Menu inicial | Fornecida por Rafaela — *\[autor/fonte a definir\]* |
-|  |  |  |
-|  |  |  |
+| Silent Pog (silent_pog.wav) | Menu inicial e tela de fim | Vinicius Vaes Massagli (equipe) |
+| Alta Tensão (alta_tensao.wav) | Cemitério, durante o jogo | Vinicius Vaes Massagli (equipe) |
+| CHASE (chase.wav) | Catacumbas, incluindo a luta com o esqueleto | Vinicius Vaes Massagli (equipe) |
+
+As faixas ficam em Assets/Audio/Musica e tocam em loop. A troca entre elas tem fade de 1,5 s. No Game Over a música some e fica só o som da morte; no menu de pausa ela pausa junto com o jogo.
 
 ## **10.2 Efeitos sonoros** {#10.2-efeitos-sonoros}
 
@@ -516,6 +532,8 @@ Os sons tocam com pequena variação de pitch a cada vez, para não soarem repet
 | Man in Suit (base do detetive, CC0) | Modelo + animações | [Quaternius](https://poly.pizza/u/Quaternius) | https\://poly.pizza/m/mQnGoME1ez |
 | UnifrakturMaguntia (título, SIL OFL) | Fonte | j. "mach" wust | https\://fonts.google.com/specimen/UnifrakturMaguntia |
 | Special Elite (botões e textos, Apache 2.0) | Fonte | Astigmatic | https\://fonts.google.com/specimen/Special+Elite |
+| Elementary Dungeon Pack Lite (catacumbas, móveis da casa do coveiro, livro) | Modelos | Gridness Studios | Unity Asset Store |
+| Skeleton (esqueleto chefe e animações) | Modelo + animações | SazenGames | Unity Asset Store |
 
 # **16\. Organização do Projeto** {#16.-organização-do-projeto}
 
