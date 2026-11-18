@@ -52,6 +52,9 @@ Sobreviva ou morra
 | 2.1 | 15/11/2026 | Rafaela | Combate: soco e revólver (mira, munição, recarga), sem defesa nem esquiva; vida e IA básica dos inimigos |
 | 2.2 | 15/11/2026 | Rafaela | Mira: o detetive sempre aponta o revólver ao segurar Mouse Dir., mesmo sem inimigos, e pode atirar em qualquer direção |
 | 2.3 | 18/11/2026 | Kaique | Menu inicial (Iniciar, Créditos, Sair), tela de créditos, tela de Game Over, menu de Pausa (Esc), tela de Controles e fontes do jogo |
+| 2.4 | 18/11/2026 | Kaique | Save com galhos e extrator cancelado (galhos removidos do jogo) |
+| 2.5 | 18/11/2026 | Kaique | Cerca: removidos os pilares avulsos que ficavam sobrepostos aos pilares do próprio modelo da cerca e piscavam (z-fighting) |
+| 2.6 | 18/11/2026 | Kaique | Mecânica de save cancelada: o jogo não tem save (sem Salvar na pausa, Continuar no menu ou Carregar no Game Over) |
 
 **Sumário**
 
@@ -236,10 +239,10 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | Soco (corpo a corpo) | Sem mirar (ou sem o revólver equipado), Mouse Esq. dá um soco; o detetive fica parado durante o golpe. Não há defesa nem esquiva | Dano 2 (inimigo comum cai com 5 socos); alcance de \~1 m à frente; 0,9 s por soco |
 | Recarregar | Com o revólver equipado, R completa o tambor usando balas do item Munição (empilhável) do inventário | Tambor de 6 balas; balas por caixa encontrada *\[a definir\]* |
 | Coleta de itens | Itens encontrados no cenário vão para o inventário ao apertar E perto deles; com o inventário cheio o item fica no chão | Tecla E, até 1,5 m do item |
-| Inventário | 10 espaços, um item por espaço, sem peso; galhos especiais empilham no mesmo espaço; itens podem ser guardados, descartados ou arremessados no cenário. A tela do inventário pausa o jogo e mostra a condição (vida) e a arma equipada. Ações sobre o item escolhido: **Usar**, **Analisar** (mostra o texto explicativo do item) e **Descartar** (larga o item no chão, e ele pode ser pego de novo; itens sem modelo no mundo não podem ser largados) | 10 espaços |
+| Inventário | 10 espaços, um item por espaço, sem peso; itens empilháveis (ex.: munição) ocupam um espaço só; itens podem ser guardados, descartados ou arremessados no cenário. A tela do inventário pausa o jogo e mostra a condição (vida) e a arma equipada. Ações sobre o item escolhido: **Usar**, **Analisar** (mostra o texto explicativo do item) e **Descartar** (larga o item no chão, e ele pode ser pego de novo; itens sem modelo no mundo não podem ser largados) | 10 espaços |
 | Usar item | Perto de um ponto do cenário que aceita aquele item (ex.: porta trancada), o item é usado nele e a história avança (a chave é consumida e a porta abre). Fora disso: arma equipa/guarda; item de cura restaura vida (não é gasto com a vida cheia) | Alcance de 2,2 m do ponto |
 | Interagir com o cenário | Abrir/usar portas, portões e janelas; num ponto trancado, E mostra uma mensagem de dica | Tecla E |
-| Save manual (extrator) | O jogador encontra galhos especiais, que ficam no inventário. Só é possível salvar em um extrator (espécie de moedor), que fica nas áreas seguras: o galho é inserido, vira óleo e o detetive reabastece o lampião. Cada save consome 1 galho | 1 galho por save; áreas seguras a definir |
+| Save | Não há save: ao morrer ou sair para o menu, o jogo recomeça do início | — |
 | Ação contextual | Espaço só funciona em pontos marcados do cenário (sair de buraco, atravessar vão); não há pulo livre | A definir |
 | Lampião a óleo | O detetive carrega um lampião que ilumina em âmbar ao seu redor | A definir |
 
@@ -306,7 +309,6 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 | Item | Efeito | Duração | Onde aparece |
 | :---- | :---- | :---- | :---- |
 | Item de cura | Restaura vida | *\[Quantidade a definir\]* | *\[A definir\]* |
-| Galho especial | Inserido no extrator (áreas seguras), vira óleo para o lampião e permite salvar o jogo; empilha no inventário | Consumido ao salvar (1 por save) | *\[A definir\]* |
 | Revólver | Arma do detetive; equipada pelo inventário | Permanente | Inventário inicial |
 | Chave da casa do coveiro | Destranca a porta da casa do coveiro | Consumida ao usar | Cemitério, ao lado da cova aberta perto da casa do coveiro |
 | Munição | Balas do revólver; empilha no inventário; R recarrega o tambor de 6 | Consumida ao recarregar | *\[A definir\]* |
@@ -343,13 +345,13 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 
 | Tela | Elementos / botões | Leva para |
 | :---- | :---- | :---- |
-| **Menu inicial** | Sobre a própria cena, que fica congelada e escurecida ao fundo (câmera do portão). Título "Cemetery Gates" em letra gótica, subtítulo "sobreviva ou morra" e os botões Iniciar, Controles, Créditos e Sair, em fonte de máquina de escrever (âmbar quando selecionados; mouse ou setas + Enter). Planejados: Continuar, Opções e música de fundo | Jogo (Iniciar), Controles, Créditos, fecha o jogo (Sair) |
+| **Menu inicial** | Sobre a própria cena, que fica congelada e escurecida ao fundo (câmera do portão). Título "Cemetery Gates" em letra gótica, subtítulo "sobreviva ou morra" e os botões Iniciar, Controles, Créditos e Sair, em fonte de máquina de escrever (âmbar quando selecionados; mouse ou setas + Enter). Planejados: Opções e música de fundo | Jogo (Iniciar), Controles, Créditos, fecha o jogo (Sair) |
 | **Controles** (pelo menu inicial ou pela pausa) | Cada tecla em âmbar ao lado do que ela faz (W, S, A/D, Shift + W, E, Mouse Esq., Mouse Dir., R, I, Esc), uma dica sobre os tank controls e Voltar (ou Esc) | A tela que abriu (menu inicial ou pausa) |
 | **Opções** | *\[A definir\]* | Menu inicial |
 | **Inventário** (tecla I, pausa o jogo) | 10 espaços, detalhes do item, condição e arma equipada, botões Usar / Analisar / Descartar | Jogo (I ou Esc) |
-| **Pausa** (Esc, pausa o jogo e o som) | Título "Pausa" em letra gótica, a frase "Os mortos também sabem esperar." e os botões Voltar ao jogo, Controles e Sair, no estilo do menu inicial | Jogo (Voltar ao jogo ou Esc), Controles, Menu inicial (Sair; o progresso se perde até existir save) |
+| **Pausa** (Esc, pausa o jogo e o som) | Título "Pausa" em letra gótica, a frase "Os mortos também sabem esperar." e os botões Voltar ao jogo, Controles e Sair, no estilo do menu inicial | Jogo (Voltar ao jogo ou Esc), Controles, Menu inicial (Sair; o progresso se perde) |
 | **Vitória** | *\[Pontuação final, Jogar novamente, Menu\]* | *\[Jogo, Menu\]* |
-| **Game over** | Aparece com fade 2,3 s depois da morte (fim da animação Death): "Game Over" em vermelho-sangue, a frase "O detetive tombou entre os túmulos.", Recomeçar do início e Carregar último save (desativado até existir o sistema de save) | Jogo do início, sem passar pelo menu |
+| **Game over** | Aparece com fade 2,3 s depois da morte (fim da animação Death): "Game Over" em vermelho-sangue, a frase "O detetive tombou entre os túmulos.", Recomeçar do início | Jogo do início, sem passar pelo menu |
 | **Créditos** | Integrantes, orientação, modelos 3D, fontes e sons; Voltar (ou Esc) | Menu inicial |
 
 ## **8.2 HUD** {#8.2-hud}
@@ -393,7 +395,7 @@ Clima: o cenário é frio e arroxeado; o âmbar aparece só onde há fogo e luz 
 
 * Tons frios e pouca interação com o ambiente — sensação de solidão, clima sombrio.
 
-**Cenário inicial — Cemitério:** área cercada de \~44 × 36 m, com cerca de ferro e pilares de pedra (alguns trechos quebrados) e um portão em arco ao sul, por onde o detetive chega. O chão de terra é uniforme. Do portão sai um caminho de pedra até a cripta, ao norte, cruzado por um caminho leste–oeste que termina num oratório com velas. Lápides em quatro quadras irregulares. A casa do coveiro (casebre de madeira, janela acesa, lampião na porta; interior a fazer) fica no canto sudoeste, ao lado de uma cova aberta com um lampião no chão; um portão lateral de serviço fica na cerca oeste. Na quadra nordeste há uma cova saqueada (lápide quebrada, caixão fora da cova e ossos espalhados). Pinheiros e árvores secas cercam o cemitério e somem na névoa. Luz: lua índigo, ambiente roxo profundo e névoa; o âmbar aparece só nos lampiões, velas e na janela do casebre.
+**Cenário inicial — Cemitério:** área cercada de \~44 × 36 m, com cerca de ferro e pilares duplos nas emendas, que já fazem parte de cada trecho da cerca (alguns trechos quebrados) e um portão em arco ao sul, por onde o detetive chega. O chão de terra é uniforme. Do portão sai um caminho de pedra até a cripta, ao norte, cruzado por um caminho leste–oeste que termina num oratório com velas. Lápides em quatro quadras irregulares. A casa do coveiro (casebre de madeira, janela acesa, lampião na porta; interior a fazer) fica no canto sudoeste, ao lado de uma cova aberta com um lampião no chão; um portão lateral de serviço fica na cerca oeste. Na quadra nordeste há uma cova saqueada (lápide quebrada, caixão fora da cova e ossos espalhados). Pinheiros e árvores secas cercam o cemitério e somem na névoa. Luz: lua índigo, ambiente roxo profundo e névoa; o âmbar aparece só nos lampiões, velas e na janela do casebre.
 
 **Origem dos assets:** Ambos — próprios e de terceiros (listados na Seção 15).
 
