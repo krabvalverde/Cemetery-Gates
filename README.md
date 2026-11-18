@@ -2,7 +2,7 @@
 
 *Sobreviva ou morra.*
 
-Survival horror em 3D low poly com câmera fixa, nos anos 1940. Um detetive investiga o sumiço de corpos do cemitério onde o pai está enterrado: atravessa o cemitério tomado por zumbis, desce às catacumbas e enfrenta o esqueleto que guarda o livro da maldição.
+Survival horror em 3D low poly com câmera fixa, nos anos 1940. O detetive Phil investiga o sumiço de corpos do cemitério onde o pai está enterrado: atravessa o cemitério tomado por zumbis, desce às catacumbas e enfrenta o esqueleto que guarda o livro da maldição.
 
 Projeto Prático (P2) da disciplina **Desenvolvimento de Jogos Digitais** — Ciência da Computação.
 Professor: Me. Luis Filipe Grael Tinos.
@@ -51,11 +51,11 @@ Os controles são *tank controls*: o detetive anda para onde está virado, não 
 
 ## Executando
 
-- **Build:** abra o executável `Cemetery Gates.exe` da pasta da build (Windows).
+- **Build (Windows 64 bits):** extraia o `Cemetery Gates.zip` e abra `Cemetery Gates.exe` dentro da pasta `Cemetery Gates`. Mantenha o executável junto com os outros arquivos e pastas da build (`Cemetery Gates_Data`, `MonoBleedingEdge`, DLLs). Uma partida leva cerca de 20 a 40 minutos.
 - **Na Unity:** abra o projeto com a Unity 6.5, abra a cena `Assets/Scenes/Cemiterio.unity` e aperte Play. O menu inicial aparece sobre o cemitério.
 - **Gerar a build:** File → Build Profiles → Windows, com as cenas `Cemiterio` e `Catacumbas` (nessa ordem) na lista, e Build.
 
-O repositório usa Git LFS para cenas, modelos, texturas e áudio. Rode `git lfs install` antes de clonar.
+Repositório: https://github.com/krabvalverde/Cemetery-Gates. Ele usa Git LFS para cenas, modelos, texturas e áudio: rode `git lfs install` antes de clonar, senão esses arquivos vêm vazios.
 
 ## Documentação
 
