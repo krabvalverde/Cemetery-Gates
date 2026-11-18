@@ -18,7 +18,7 @@ Sobreviva ou morra
 
 **Entrega:** 19/11/2026
 
-**Versão do documento: 3.0**
+**Versão do documento: 3.1**
 
 **Integrantes do grupo (até 5\)**
 
@@ -59,6 +59,7 @@ Sobreviva ou morra
 | 2.8 | 18/11/2026 | Kaique | Catacumbas com uma câmera fixa por sala; trilha sonora (menu e fim, cemitério, catacumbas) |
 | 2.9 | 18/11/2026 | Kaique | Chefe: golpe comprometido (ataca ao entrar no alcance, pode errar e fica parado 1,7 s), abrindo janela para o jogador atacar |
 | 3.0 | 18/11/2026 | Kaique | Revisão geral contra o jogo implementado: pitch, diferencial, core loop, HUD, escopo, checklist, cronograma, playtesting, organização e autoavaliação preenchidos; removidos itens não implementados (Ghoul, ação contextual com Espaço, arremessar itens, Opções, filtro CRT); regras, vitória/derrota, valores de itens e créditos (modelo do zumbi, também na tela de créditos do jogo) corrigidos; README criado |
+| 3.1 | 18/11/2026 | Kaique | Conferência com o enunciado da P2: tela de créditos passa a citar a fonte de cada asset (poly.pizza, Sketchfab, Asset Store, Google Fonts); malhas do Elementary Dungeon Pack com Read/Write para o NavMesh funcionar na build; comentários no código citados na autoavaliação |
 
 **Sumário**
 
@@ -514,6 +515,7 @@ Datas tiradas do histórico de versões deste documento e dos commits do reposit
 | 18/11 | Equipe | Pilares da cerca piscavam (z-fighting) | Removidos os pilares avulsos sobrepostos aos do modelo da cerca (v2.5) |
 | 18/11 | Equipe | O save com galhos e extrator complicava o jogo curto sem acrescentar tensão | Save cancelado; checkpoint só na entrada das catacumbas (v2.4 / 2.6) |
 | 18/11 | Equipe | O chefe virava e acertava o detetive o tempo todo: não havia momento seguro para atacar | Golpe comprometido: ataca ao entrar no alcance, pode errar e fica 1,7 s parado (v2.9) |
+| 18/11 | Equipe | Console da Unity: as malhas das catacumbas não tinham Read/Write, e o NavMesh gerado em runtime falharia na build (o esqueleto ficaria sem caminho) | Read/Write ligado no modelo do Elementary Dungeon Pack |
 | *\[dd/mm\]* | *\[Nome\]* | *\[Registrar os testes de jogo completo antes da entrega\]* | *\[…\]* |
 
 # **15\. Créditos e Assets de Terceiros** {#15.-créditos-e-assets-de-terceiros}
@@ -576,13 +578,13 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 
 ☐  Executável / build jogável para PC — *a gerar (File → Build Profiles, Windows, cenas Cemiterio e Catacumbas)*
 
-☑  Projeto completo da engine (.zip) ou link do repositório no GitHub — https\://github.com/krabvalverde/Cemetery-Gates
+☐  Projeto completo da engine (.zip) ou link do repositório no GitHub — https\://github.com/krabvalverde/Cemetery-Gates *(a branch main ainda só tem o primeiro commit: juntar a develop na main e enviar ao GitHub antes de entregar, e conferir se o repositório é público)*
 
 ☑  Game Design Document (este documento)
 
 ☑  README com os integrantes do grupo e as instruções do jogo — README.md na raiz do repositório
 
-☑  Tela de créditos no jogo (obrigatória se houver assets de terceiros) — Menu inicial → Créditos: equipe, orientação, modelos 3D (incluindo o zumbi), fontes, música e sons
+☑  Tela de créditos no jogo (obrigatória se houver assets de terceiros) — Menu inicial → Créditos: equipe, orientação, modelos 3D com autor e fonte (incluindo o zumbi), fontes tipográficas, música e sons
 
 ## **17.2 Roteiro da apresentação (máx. 15 min)** {#17.2-roteiro-da-apresentação-(máx.-15-min)}
 
@@ -600,6 +602,6 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 | **Conceitos da disciplina** | Uso correto de estruturas e conceitos trabalhados em aula | MonoBehaviour e ciclo de vida (Awake/Start/Update/LateUpdate), CharacterController, raycast e OverlapSphere, triggers (zonas de câmera), Animator e CrossFade, coroutines, ScriptableObjects (itens), UnityEvents (portas), NavMesh, troca de cenas (SceneManager) e Time.timeScale para pausa |
 | **Design e experiência do jogador** | Clareza das regras, curva de dificuldade, feedback visual/sonoro e diversão | Regras simples (2.4), duas fases com dificuldade crescente (7.1), mensagens de dica em portas trancadas, som para cada ação (10.2), coice e clarão do tiro, chefe com janela de ataque legível |
 | **Trabalho em equipe** | Distribuição equilibrada de tarefas entre os integrantes | Ver Seção 12 *\[completar as contribuições de cada integrante\]* |
-| **Organização do projeto e do código** | Nomenclatura significativa, organização de cenas/scripts | Pastas por sistema e por tipo de asset (16.1), convenções de nomes (16.2), Git com LFS (16.3) |
+| **Organização do projeto e do código** | Nomenclatura significativa, organização de cenas/scripts | Pastas por sistema e por tipo de asset (16.1), convenções de nomes (16.2), comentários em português explicando o porquê de cada script e dos trechos não óbvios, Git com LFS (16.3) |
 | **Apresentação** | Apresentação clara e coerente, com domínio e segurança | Roteiro em 17.2 *\[definir quem apresenta cada parte\]* |
 
