@@ -19,6 +19,7 @@ public class DetectiveMovement : MonoBehaviour
     Animator animator;
     float verticalVelocity;
     string currentState = "Idle";
+    readonly HeldInput vertical = new(), horizontal = new(), run = new();
 
     void Awake()
     {
@@ -33,9 +34,9 @@ public class DetectiveMovement : MonoBehaviour
     {
         if (combat.Busy || health.Current == 0) return;
 
-        float v = Input.GetAxisRaw("Vertical");
-        float h = Input.GetAxisRaw("Horizontal");
-        bool running = v > 0f && Input.GetKey(KeyCode.LeftShift);
+        float v = vertical.Read(Input.GetAxisRaw("Vertical"));
+        float h = horizontal.Read(Input.GetAxisRaw("Horizontal"));
+        bool running = v > 0f && run.Read(Input.GetKey(KeyCode.LeftShift) ? 1f : 0f) > 0f;
 
         transform.Rotate(0f, h * turnSpeed * Time.deltaTime, 0f);
 
@@ -62,5 +63,21 @@ public class DetectiveMovement : MonoBehaviour
         if (state == currentState) return;
         currentState = state;
         animator.CrossFade(state, 0.15f);
+    }
+}
+
+// Acesso remoto (AnyDesk) entrega tecla segurada como "apertou/soltou" a cada repetição do teclado (~30 ms),
+// e o Input Manager antigo passa isso adiante: o detetive picotava. Segura o último valor por um instante.
+// ponytail: a pausa do atraso inicial de repetição (~0,5 s) ainda aparece via remoto; jogando local não muda nada.
+public class HeldInput
+{
+    const float Grace = 0.1f;
+    float value, lastSeen;
+
+    public float Read(float raw)
+    {
+        if (raw != 0f) { value = raw; lastSeen = Time.unscaledTime; }
+        else if (Time.unscaledTime - lastSeen > Grace) value = 0f;
+        return value;
     }
 }

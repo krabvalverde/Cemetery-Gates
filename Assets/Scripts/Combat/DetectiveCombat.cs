@@ -44,6 +44,7 @@ public class DetectiveCombat : MonoBehaviour
     bool punching;
     float nextShot;
     float recoil;
+    readonly HeldInput aimTurn = new();
 
     void Awake()
     {
@@ -90,7 +91,7 @@ public class DetectiveCombat : MonoBehaviour
         target = FindTarget();
         if (!target)
         {
-            transform.Rotate(0f, Input.GetAxisRaw("Horizontal") * aimTurnSpeed * Time.deltaTime, 0f);
+            transform.Rotate(0f, aimTurn.Read(Input.GetAxisRaw("Horizontal")) * aimTurnSpeed * Time.deltaTime, 0f);
             return;
         }
         Vector3 to = target.transform.position - transform.position;

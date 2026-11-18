@@ -60,7 +60,7 @@ public class InventoryUI : MonoBehaviour
 
     void Update()
     {
-        if (!inventory) return;
+        if (!inventory || MainMenu.IsOpen || GameOverUI.IsShowing || PauseMenu.IsOpen) return;
         if (Input.GetKeyDown(KeyCode.I)) SetOpen(!IsOpen);
         else if (IsOpen && Input.GetKeyDown(KeyCode.Escape)) SetOpen(false);
     }

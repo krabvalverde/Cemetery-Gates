@@ -51,6 +51,7 @@ Sobreviva ou morra
 | 2.0 | 12/11/2026 | Rafaela | Sistema de inventário (coletar, usar, analisar, descartar), itens no cenário e tela do inventário |
 | 2.1 | 15/11/2026 | Rafaela | Combate: soco e revólver (mira, munição, recarga), sem defesa nem esquiva; vida e IA básica dos inimigos |
 | 2.2 | 15/11/2026 | Rafaela | Mira: o detetive sempre aponta o revólver ao segurar Mouse Dir., mesmo sem inimigos, e pode atirar em qualquer direção |
+| 2.3 | 18/11/2026 | Kaique | Menu inicial (Iniciar, Créditos, Sair), tela de créditos, tela de Game Over, menu de Pausa (Esc), tela de Controles e fontes do jogo |
 
 **Sumário**
 
@@ -214,6 +215,7 @@ Morrer ao enfrentar inimigos, não resolver o mistério.
 | :---- | :---- | :---- |
 | Movimentação (tank controls) | W, A, S, D |  |
 | Inventário (abrir/fechar) | I (Esc também fecha) |  |
+| Pausa (abrir/fechar) | Esc |  |
 | Navegar no inventário | Mouse, ou setas + Enter |  |
 | Mirar (segurar, com o revólver equipado) | Mouse Dir. |  |
 | Ataque/ Tiro | Mouse Esq. (soco; tiro enquanto mira) |  |
@@ -341,13 +343,14 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 
 | Tela | Elementos / botões | Leva para |
 | :---- | :---- | :---- |
-| **Menu inicial** | Título do jogo, Novo jogo, Continuar, Opções, Créditos, Sair (com música de fundo) | Jogo (novo), Jogo (último save), Opções, Créditos, fecha o jogo |
+| **Menu inicial** | Sobre a própria cena, que fica congelada e escurecida ao fundo (câmera do portão). Título "Cemetery Gates" em letra gótica, subtítulo "sobreviva ou morra" e os botões Iniciar, Controles, Créditos e Sair, em fonte de máquina de escrever (âmbar quando selecionados; mouse ou setas + Enter). Planejados: Continuar, Opções e música de fundo | Jogo (Iniciar), Controles, Créditos, fecha o jogo (Sair) |
+| **Controles** (pelo menu inicial ou pela pausa) | Cada tecla em âmbar ao lado do que ela faz (W, S, A/D, Shift + W, E, Mouse Esq., Mouse Dir., R, I, Esc), uma dica sobre os tank controls e Voltar (ou Esc) | A tela que abriu (menu inicial ou pausa) |
 | **Opções** | *\[A definir\]* | Menu inicial |
 | **Inventário** (tecla I, pausa o jogo) | 10 espaços, detalhes do item, condição e arma equipada, botões Usar / Analisar / Descartar | Jogo (I ou Esc) |
-| **Pausa (opcional)** | *\[Continuar, Reiniciar, Menu\]* | *\[Jogo, Menu\]* |
+| **Pausa** (Esc, pausa o jogo e o som) | Título "Pausa" em letra gótica, a frase "Os mortos também sabem esperar." e os botões Voltar ao jogo, Controles e Sair, no estilo do menu inicial | Jogo (Voltar ao jogo ou Esc), Controles, Menu inicial (Sair; o progresso se perde até existir save) |
 | **Vitória** | *\[Pontuação final, Jogar novamente, Menu\]* | *\[Jogo, Menu\]* |
-| **Game over** | *\[Mensagem, Reiniciar, Menu\]* | *\[Jogo, Menu\]* |
-| **Créditos** | *\[Integrantes, assets de terceiros, Voltar\]* | *\[Menu\]* |
+| **Game over** | Aparece com fade 2,3 s depois da morte (fim da animação Death): "Game Over" em vermelho-sangue, a frase "O detetive tombou entre os túmulos.", Recomeçar do início e Carregar último save (desativado até existir o sistema de save) | Jogo do início, sem passar pelo menu |
+| **Créditos** | Integrantes, orientação, modelos 3D, fontes e sons; Voltar (ou Esc) | Menu inicial |
 
 ## **8.2 HUD** {#8.2-hud}
 
@@ -509,8 +512,8 @@ Os sons tocam com pequena variação de pitch a cada vez, para não soarem repet
 | Revolver | Modelo | [austincford](https://poly.pizza/u/austincford) | https\://poly.pizza/m/m6GY8hBgWJ |
 | Halloween Bits | Modelo | Kay Lousberg | https\://poly.pizza/bundle/Halloween-Bits-5J1jHdy21M |
 | Man in Suit (base do detetive, CC0) | Modelo + animações | [Quaternius](https://poly.pizza/u/Quaternius) | https\://poly.pizza/m/mQnGoME1ez |
-|  |  |  |  |
-|  |  |  |  |
+| UnifrakturMaguntia (título, SIL OFL) | Fonte | j. "mach" wust | https\://fonts.google.com/specimen/UnifrakturMaguntia |
+| Special Elite (botões e textos, Apache 2.0) | Fonte | Astigmatic | https\://fonts.google.com/specimen/Special+Elite |
 
 # **16\. Organização do Projeto** {#16.-organização-do-projeto}
 
