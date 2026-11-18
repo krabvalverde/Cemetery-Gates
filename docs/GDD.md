@@ -18,7 +18,7 @@ Sobreviva ou morra
 
 **Entrega:** 19/11/2026
 
-**Versão do documento: 3.2**
+**Versão do documento: 3.3**
 
 **Integrantes do grupo**
 
@@ -61,6 +61,7 @@ Sobreviva ou morra
 | 3.0 | 18/11/2026 | Kaique | Revisão geral contra o jogo implementado: pitch, diferencial, core loop, HUD, escopo, checklist, cronograma, playtesting, organização e autoavaliação preenchidos; removidos itens não implementados (Ghoul, ação contextual com Espaço, arremessar itens, Opções, filtro CRT); regras, vitória/derrota, valores de itens e créditos (modelo do zumbi, também na tela de créditos do jogo) corrigidos; README criado |
 | 3.1 | 18/11/2026 | Kaique | Conferência com o enunciado da P2: tela de créditos passa a citar a fonte de cada asset (poly.pizza, Sketchfab, Asset Store, Google Fonts); malhas do Elementary Dungeon Pack com Read/Write para o NavMesh funcionar na build; comentários no código citados na autoavaliação |
 | 3.2 | 18/11/2026 | Kaique | Divisão de tarefas por integrante (Seção 12) refletida no cronograma, no roteiro da apresentação e na autoavaliação |
+| 3.3 | 18/11/2026 | Kaique | Nome (Phil) e personalidade do detetive; build de Windows gerada e testada do início ao fim; checklist de entrega completo |
 
 **Sumário**
 
@@ -78,7 +79,7 @@ Sobreviva ou morra
 
 [2.1 Objetivo do jogador	1](#2.1-objetivo-do-jogador)
 
-[2.2 Condição de vitória	1](#2.1-objetivo-do-jogador)
+[2.2 Condição de vitória	1](#2.2-condição-de-vitória)
 
 [2.3 Condição de derrota	1](#2.3-condição-de-derrota)
 
@@ -156,7 +157,7 @@ Sobreviva ou morra
 
 ## **1.1 Conceito (pitch)** {#1.1-conceito-(pitch)}
 
-Survival horror em 3D low poly com câmera fixa, nos anos 1940. O jogador controla um detetive que investiga o sumiço de corpos do cemitério onde o pai está enterrado: explora o cemitério tomado por zumbis, encontra chaves, desce às catacumbas e enfrenta o esqueleto que guarda o livro da maldição. A graça está na tensão de poucos recursos (6 balas no tambor, munição contada, 10 espaços no inventário) e de uma câmera que nunca mostra tudo o que está à espreita.
+Survival horror em 3D low poly com câmera fixa, nos anos 1940. O jogador controla Phil, um detetive que investiga o sumiço de corpos do cemitério onde o pai está enterrado: explora o cemitério tomado por zumbis, encontra chaves, desce às catacumbas e enfrenta o esqueleto que guarda o livro da maldição. A graça está na tensão de poucos recursos (6 balas no tambor, munição contada, 10 espaços no inventário) e de uma câmera que nunca mostra tudo o que está à espreita.
 
 ## **1.2 Ficha técnica** {#1.2-ficha-técnica}
 
@@ -195,7 +196,7 @@ O cemitério é dividido em 10 zonas externas, cada uma com a sua câmera fixa, 
 
 Resolver o mistério do desaparecimento de corpos do cemitério.
 
-## **2.2 Condição de vitória**
+## **2.2 Condição de vitória** {#2.2-condição-de-vitória}
 
 Vencer o esqueleto guardião no salão das catacumbas e pegar o livro da maldição no altar, o que desfaz a maldição e mostra a tela de Fim.
 
@@ -284,9 +285,9 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 
 # **4\. Personagem Principal** {#4.-personagem-principal}
 
-**Nome:** *\[Nome do personagem\]*
+**Nome:** Phil
 
-**Descrição:** Detetive nos anos 1940; investiga a invasão e o desaparecimento de corpos no cemitério onde o pai está enterrado. Carrega lampião a óleo e revólver. Aparência: homem de meia-idade, cabelo e barba grisalhos, chapéu fedora escuro com fita preta, sobretudo cáqui na altura da canela (aberto na frente, com cinto), camisa clara, gravata vermelho-escura, calça e sapatos escuros. Modelo low poly (\~2.460 triângulos) com rig humanoide, baseado no "Man in Suit" (Seção 15). *\[Personalidade\]*
+**Descrição:** Detetive nos anos 1940; investiga a invasão e o desaparecimento de corpos no cemitério onde o pai está enterrado. Carrega lampião a óleo e revólver. Aparência: homem de meia-idade, cabelo e barba grisalhos, chapéu fedora escuro com fita preta, sobretudo cáqui na altura da canela (aberto na frente, com cinto), camisa clara, gravata vermelho-escura, calça e sapatos escuros. Modelo low poly (\~2.460 triângulos) com rig humanoide, baseado no "Man in Suit" (Seção 15). Personalidade: cético e metódico, Phil passou a carreira desmontando histórias de fantasmas com fatos e não acredita em maldições — até o cemitério provar o contrário. É teimoso e de poucas palavras; prefere observar a falar e só saca o revólver quando não há outra saída. O que o move não é o caso, e sim o pai: não admite que o túmulo dele seja profanado, e esse senso de dever pesa mais que o medo.
 
 **Atributos:** Vida: 10 hits. Velocidade: andar 1,6 m/s, correr 3,8 m/s, ré 1,1 m/s, giro 150°/s. Dano: tiro 5 (alcance 15 m), soco 2 (alcance ~1 m). Inventário: 10 espaços.
 
@@ -302,8 +303,6 @@ Detetive e inimigos usam CharacterController (cápsula com gravidade, sem pulo).
 | Mira | Mouse Dir. com o revólver equipado: Idle com o braço direito estendido e o revólver na mão (pose feita por código) | — | Idle, Walk, Run, WalkBack |
 | Tiro | Mouse Esq. mirando: o braço dá um coice de 25° para cima (mais na mão que no ombro) e volta em ~0,2 s; clarão laranja com luz no cano por 0,05 s; a bala sai do cano com rastro (feito por código) | — | Mira |
 | Death (morte) | Vida chega a zero | 50 frames (2,1 s) | — |
-
-*\[Opcional: insira aqui a imagem/concept do personagem ou a máquina de estados do Animator.\]*
 
 # **5\. Inimigos e Obstáculos** {#5.-inimigos-e-obstáculos}
 
@@ -363,7 +362,7 @@ O jogo não tem pontuação nem ranking, como é comum no survival horror cláss
 | **Pausa** (Esc, pausa o jogo e o som) | Título "Pausa" em letra gótica, a frase "Os mortos também sabem esperar." e os botões Voltar ao jogo, Controles e Sair, no estilo do menu inicial | Jogo (Voltar ao jogo ou Esc), Controles, Menu inicial (Sair; o progresso se perde) |
 | **Game over** | Aparece com fade 2,3 s depois da morte (fim da animação Death): "Game Over" em vermelho-sangue, a frase "O detetive tombou entre os túmulos." e um botão: Recomeçar do início (cemitério) ou Recomeçar nas catacumbas | Jogo do início, ou entrada das catacumbas com o estado que o detetive tinha ao descer; sem passar pelo menu |
 | **Fim (vitória)** | Ao pegar o livro da maldição: fade de 2 s para "Fim" em letra gótica (cor osso), a frase "A maldição foi desfeita. Os mortos voltam a descansar." e Voltar ao menu; o jogo congela por trás | Menu inicial |
-| **Créditos** | Integrantes, orientação, modelos 3D, fontes e sons; Voltar (ou Esc) | Menu inicial |
+| **Créditos** | Integrantes, orientação, modelos 3D (autor e fonte de cada um), fontes tipográficas, música e sons; Voltar (ou Esc) | Menu inicial |
 
 ## **8.2 HUD** {#8.2-hud}
 
@@ -390,11 +389,11 @@ Como nas referências (Resident Evil, Alone in the Dark), a tela de jogo fica li
 | Roxo profundo | \#3F2548 | Luz ambiente/tom das sombras, névoa distante |
 | Índigo | \#35369C | Luz da lua (luz direcional), áreas frias |
 | Lavanda | \#7C679E | Névoa próxima, pedra, lápides, contornos |
-| Amarelo pálido | \#C8C793 | Texto da UI, documentos/notas, ossos, destaque de interagível |
+| Amarelo pálido | \#C8C793 | Texto da UI e mensagens, ossos, destaque de interagível |
 | Âmbar (luz) | \#E09A3E | Lampião, velas, janelas acesas, postes |
 | Âmbar escuro | \#8A4B1F | Brasas, madeira, ferrugem, falloff das luzes quentes |
 
-Clima: o cenário é frio e arroxeado; o âmbar aparece só onde há fogo e luz humana, guiando o olhar do jogador. Texto em amarelo pálido sobre preto quente mantém a leitura mesmo com o filtro CRT.
+Clima: o cenário é frio e arroxeado; o âmbar aparece só onde há fogo e luz humana, guiando o olhar do jogador. Texto em amarelo pálido sobre preto quente mantém a leitura mesmo nas cenas mais escuras.
 
 **Estética (sensações):**
 
@@ -503,8 +502,9 @@ Datas tiradas do histórico de versões deste documento e dos commits do reposit
 | 18/11 | Menus, Game Over, segunda fase (catacumbas e chefe), trilha sonora | Rafaela, Kaique, Túlio, Vinicius | Concluído |
 | 18/11 | Playtesting, balanceamento e correção de bugs (Seção 14) | Todos | Concluído |
 | até 18/11 | README e créditos completos | Kaique, Rafaela | Concluído |
-| até 18/11 | Build final e ensaio da apresentação | Kaique (build), todos (ensaio) | A fazer |
-| 19/11/2026 | Entrega via CONNECT+ e sorteio da ordem de apresentação | Todos | A fazer |
+| até 18/11 | Build final e teste completo nela | Kaique (build), todos (teste) | Concluído |
+| até 19/11/2026 (prazo) | Entrega via CONNECT+ | Todos | Concluído (entregue em 18/11) |
+| 19/11/2026 | Sorteio da ordem de apresentação (apresentações em 19/11 e 26/11) | Todos | A fazer |
 
 # **14\. Playtesting e Balanceamento** {#14.-playtesting-e-balanceamento}
 
@@ -517,6 +517,7 @@ Datas tiradas do histórico de versões deste documento e dos commits do reposit
 | 18/11 | Equipe | O save com galhos e extrator complicava o jogo curto sem acrescentar tensão | Save cancelado; checkpoint só na entrada das catacumbas (v2.4 / 2.6) |
 | 18/11 | Equipe | O chefe virava e acertava o detetive o tempo todo: não havia momento seguro para atacar | Golpe comprometido: ataca ao entrar no alcance, pode errar e fica 1,7 s parado (v2.9) |
 | 18/11 | Equipe | Console da Unity: as malhas das catacumbas não tinham Read/Write, e o NavMesh gerado em runtime falharia na build (o esqueleto ficaria sem caminho) | Read/Write ligado no modelo do Elementary Dungeon Pack |
+| 18/11 | Equipe | Teste completo na build de Windows, do menu inicial à tela de Fim | Jogo funcional do início ao fim; nenhum ajuste necessário |
 
 # **15\. Créditos e Assets de Terceiros** {#15.-créditos-e-assets-de-terceiros}
 
@@ -576,7 +577,7 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 
 ## **17.1 Itens da entrega (19/11/2026 — CONNECT+)** {#17.1-itens-da-entrega-(19/11/2026-—-connect+)}
 
-☐  Executável / build jogável para PC — *a gerar (File → Build Profiles, Windows, cenas Cemiterio e Catacumbas)*
+☑  Executável / build jogável para PC — Windows, "Cemetery Gates.zip" (Cemetery Gates.exe, cenas Cemiterio e Catacumbas)
 
 ☑  Projeto completo da engine (.zip) ou link do repositório no GitHub — https\://github.com/krabvalverde/Cemetery-Gates (público; branch main atualizada)
 
@@ -598,7 +599,7 @@ Git com Git LFS para cenas, modelos, texturas e áudio. Branch main para versõe
 
 | Critério | O que é observado | Como o jogo atende |
 | :---- | :---- | :---- |
-| **Funcionamento do jogo** | Executa sem erros críticos, jogável do início ao fim e cumpre a proposta | Fluxo completo: menu → cemitério → casa do coveiro → cripta → catacumbas → chefe → livro → Fim; Game Over com recomeço e checkpoint nas catacumbas *\[confirmar com um teste completo na build\]* |
+| **Funcionamento do jogo** | Executa sem erros críticos, jogável do início ao fim e cumpre a proposta | Fluxo completo: menu → cemitério → casa do coveiro → cripta → catacumbas → chefe → livro → Fim; Game Over com recomeço e checkpoint nas catacumbas; confirmado em teste completo na build de Windows |
 | **Conceitos da disciplina** | Uso correto de estruturas e conceitos trabalhados em aula | MonoBehaviour e ciclo de vida (Awake/Start/Update/LateUpdate), CharacterController, raycast e OverlapSphere, triggers (zonas de câmera), Animator e CrossFade, coroutines, ScriptableObjects (itens), UnityEvents (portas), NavMesh, troca de cenas (SceneManager) e Time.timeScale para pausa |
 | **Design e experiência do jogador** | Clareza das regras, curva de dificuldade, feedback visual/sonoro e diversão | Regras simples (2.4), duas fases com dificuldade crescente (7.1), mensagens de dica em portas trancadas, som para cada ação (10.2), coice e clarão do tiro, chefe com janela de ataque legível |
 | **Trabalho em equipe** | Distribuição equilibrada de tarefas entre os integrantes | Seis frentes com um responsável cada (Seção 12): personagem e câmera, combate e inventário, inimigos e integração, design e interface, cenário e arte, áudio; trabalho integrado pelo repositório Git (16.3) |
